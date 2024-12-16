@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+
 namespace TaskManagement.Api;
 
 public static class Program
@@ -5,6 +8,12 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // Configurar o Kestrel para escutar na porta 51000
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.Listen(IPAddress.Any, 51000); 
+        });
 
         // Add services to the container.
 
@@ -14,8 +23,15 @@ public static class Program
         builder.Services.AddSwaggerGen();
 
         ////
+
         builder.Services.AddDbContext<TaskDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        {
+            options.UseSqlServer(
+                builder.Configuration.GetConnectionString("DefaultConnection"),
+                sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()
+            );
+            options.EnableSensitiveDataLogging();
+        });
 
         ////
 
@@ -34,6 +50,13 @@ public static class Program
 
 
         app.MapControllers();
+
+        // Executar migrações automaticamente na inicialização
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<TaskDbContext>();
+            dbContext.Database.Migrate(); // Aplica as migrações
+        }
 
         app.Run();
     }

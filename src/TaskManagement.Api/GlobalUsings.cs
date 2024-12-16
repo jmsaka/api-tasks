@@ -7,3 +7,4 @@ global using TaskManagement.Application.Profiles;
 global using TaskManagement.Application.Validators;
 global using FluentValidation;
 global using NLog.Extensions.Logging;
+global using System.Net;

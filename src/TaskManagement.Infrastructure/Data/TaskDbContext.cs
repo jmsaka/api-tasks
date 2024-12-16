@@ -1,9 +1,21 @@
 ﻿namespace TaskManagement.Infrastructure.Data;
 
-public class TaskDbContext(DbContextOptions<TaskDbContext> options) : DbContext(options)
+public class TaskDbContext : DbContext
 {
     public required DbSet<ProjetoEntity> Projetos { get; set; }
     public required DbSet<TarefaEntity> Tarefas { get; set; }
+
+    public TaskDbContext(DbContextOptions<TaskDbContext> options) : base(options)
+    {
+        // Força a criação do banco na primeira execução
+        Database.EnsureCreated();
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

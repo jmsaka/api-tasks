@@ -1,7 +1,7 @@
 # api-tasks
 API Tasks
 
-
+```bash
 - src/
   - Application/      -> Contém casos de uso (Handlers, Commands, Queries)
   - Domain/           -> Contém entidades e regras de negócio
@@ -13,3 +13,6 @@ API Tasks
 - docker-compose.yml  -> Arquivo para subir a API e o SQL Server no Docker
 - Dockerfile          -> Arquivo Docker para a API
 - README.md           -> Instruções do projeto
+```
+
+docker-compose up --build
