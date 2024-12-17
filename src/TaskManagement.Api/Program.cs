@@ -1,3 +1,7 @@
+using TaskManagement.Api.Resources;
+using TaskManagement.Domain.Entities;
+using TaskManagement.Domain.Enums;
+
 namespace TaskManagement.Api;
 
 public static class Program
@@ -35,6 +39,9 @@ public static class Program
 
         var app = builder.Build();
 
+        // Adiciona o middleware de fake authentication
+        app.UseMiddleware<FakeAuthenticationMiddleware>();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -68,4 +75,6 @@ public static class Program
 
         app.Run();
     }
+
+    
 }

@@ -6,6 +6,6 @@ public class ComentarioEntity : IEntity
     public string? Comentario { get; set; }
 
     public Guid TarefaId { get; set; } 
-    public required TarefaEntity Tarefa { get; set; } 
+    public TarefaEntity? Tarefa { get; set; } 
     public DateTime DataCriacao { get; set; } = DateTime.UtcNow;  
 }

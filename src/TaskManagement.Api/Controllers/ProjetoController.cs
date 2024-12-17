@@ -2,10 +2,8 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProjetoController : BaseController
+public class ProjetoController(IMediator mediator) : BaseController(mediator)
 {
-    public ProjetoController(IMediator mediator) : base(mediator) { }
-
     [HttpPost]
     public async Task<ActionResult<BaseResponse<Guid>>> Post(UpsertProjetoCommand command)
     {

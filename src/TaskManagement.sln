@@ -34,6 +34,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.CrossCutting
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Cross-Cutting", "5 - Cross-Cutting", "{AE82683F-6FBC-4EA2-AD92-4051A2B5EBE7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{9A1C0344-E7AE-4E4F-A794-16D85BFB8E3A}"
+	ProjectSection(SolutionItems) = preProject
+		..\scripts\sql\Seed.sql = ..\scripts\sql\Seed.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,5 +80,6 @@ Global
 		{B6C7B05F-F7C1-4AC9-9A22-B9EC8AFA136C} = {F55E0A43-81A0-46F1-8FC7-835ED76FFCE7}
 		{23A3E4A9-777F-4940-8020-DA9AA33A960C} = {9141E19D-853A-44BB-8DA0-8089C775C2E8}
 		{C69A83DE-6565-4542-B9A0-52C782AD5A26} = {AE82683F-6FBC-4EA2-AD92-4051A2B5EBE7}
+		{9A1C0344-E7AE-4E4F-A794-16D85BFB8E3A} = {16537DFF-BB92-43E4-8143-232D9E31B837}
 	EndGlobalSection
 EndGlobal

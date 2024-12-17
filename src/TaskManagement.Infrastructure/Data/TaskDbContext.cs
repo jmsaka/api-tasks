@@ -31,13 +31,21 @@ public class TaskDbContext : DbContext
         modelBuilder.Entity<ProjetoEntity>()
             .HasMany(p => p.Tarefas)
             .WithOne(t => t.Projeto)
-            .HasForeignKey(t => t.ProjetoId);
+            .HasForeignKey(t => t.ProjetoId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TarefaEntity>()
+            .HasMany(t => t.Comentarios)
+            .WithOne(c => c.Tarefa)
+            .HasForeignKey(c => c.TarefaId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
         modelBuilder.Entity<TarefaEntity>()
             .Property(t => t.Status)
             .HasConversion(
                 v => EnumHelper.GetEnumDescription(v),
-                v => EnumHelper.GetEnumFromDescription<StatusTarefa>(v) 
+                v => EnumHelper.GetEnumFromDescription<StatusTarefa>(v)
             )
             .HasMaxLength(20)
             .IsRequired();
@@ -53,9 +61,14 @@ public class TaskDbContext : DbContext
 
         modelBuilder.Entity<TarefaEntity>()
             .Property(t => t.Titulo).IsRequired().HasMaxLength(100);
+
         modelBuilder.Entity<TarefaEntity>()
             .Property(t => t.Descricao).IsRequired().HasMaxLength(500);
+
         modelBuilder.Entity<TarefaEntity>()
             .Property(t => t.DataVencimento).IsRequired();
+
+        modelBuilder.Entity<ComentarioEntity>()
+            .Property(c => c.Comentario).HasMaxLength(10000);
     }
 }

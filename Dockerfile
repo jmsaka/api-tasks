@@ -12,6 +12,7 @@ COPY src/TaskManagement.Api/TaskManagement.Api.csproj src/TaskManagement.Api/
 COPY src/TaskManagement.Application/TaskManagement.Application.csproj src/TaskManagement.Application/
 COPY src/TaskManagement.Domain/TaskManagement.Domain.csproj src/TaskManagement.Domain/
 COPY src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj src/TaskManagement.Infrastructure/
+COPY src/TaskManagement.CrossCutting/TaskManagement.CrossCutting.csproj src/TaskManagement.CrossCutting/
 
 # Restaurar as dependências
 RUN dotnet restore "src/TaskManagement.Api/TaskManagement.Api.csproj"

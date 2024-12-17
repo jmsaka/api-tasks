@@ -6,3 +6,4 @@ global using TaskManagement.Domain.Interfaces;
 global using TaskManagement.Infrastructure.Data;
 global using TaskManagement.CrossCutting.Helpers;
 global using TaskManagement.Domain.Enums;
+global using TaskManagement.Domain.Dtos;

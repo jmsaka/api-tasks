@@ -17,3 +17,7 @@ global using TaskManagement.Domain.Dtos;
 global using TaskManagement.Domain.Interfaces;
 global using TaskManagement.Infrastructure.Data;
 global using TaskManagement.Infrastructure.Repositories;
+global using TaskManagement.Application.Commands.Comentarios;
+global using TaskManagement.Application.Queries.Comentarios;
+global using Microsoft.AspNetCore.Authorization;
+global using TaskManagement.Application.Queries.Relatorios;

@@ -7,6 +7,10 @@ public class ComentarioProfile : Profile
         CreateMap<UpsertComentarioCommand, ComentarioEntity>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Comentario, opt => opt.MapFrom(src => src.Comentario))
-            .ReverseMap(); 
+            .ReverseMap();
+
+        CreateMap<ComentarioEntity, ComentarioDto>()
+            .ForMember(dest => dest.DataCriacao, opt => opt.MapFrom(src => src.DataCriacao))
+            .ReverseMap();
     }
 }
