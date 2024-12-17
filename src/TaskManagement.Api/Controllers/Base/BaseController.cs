@@ -1,6 +1,4 @@
-﻿using TaskManagement.Domain.Interfaces;
-
-namespace TaskManagement.Api.Controllers.Base;
+﻿namespace TaskManagement.Api.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]

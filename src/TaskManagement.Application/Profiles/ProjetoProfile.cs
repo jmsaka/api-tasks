@@ -1,6 +1,4 @@
-﻿using TaskManagement.Application.Commands.Projetos;
-
-namespace TaskManagement.Application.Profiles;
+﻿namespace TaskManagement.Application.Profiles;
 
 public class ProjetoProfile : Profile
 {

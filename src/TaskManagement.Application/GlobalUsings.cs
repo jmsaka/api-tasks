@@ -1,9 +1,10 @@
-﻿global using TaskManagement.Application.Commands.Tarefas;
-global using MediatR;
+﻿global using AutoMapper;
 global using FluentValidation;
-global using AutoMapper;
-global using TaskManagement.Domain.Entities;
+global using MediatR;
 global using Microsoft.EntityFrameworkCore;
-global using TaskManagement.Domain.Interfaces;
+global using TaskManagement.Application.Commands.Projetos;
+global using TaskManagement.Application.Commands.Tarefas;
 global using TaskManagement.Domain.Contracts;
 global using TaskManagement.Domain.Dtos;
+global using TaskManagement.Domain.Entities;
+global using TaskManagement.Domain.Interfaces;

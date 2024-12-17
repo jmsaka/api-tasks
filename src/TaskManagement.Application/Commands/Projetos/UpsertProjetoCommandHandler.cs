@@ -1,15 +1,9 @@
 ﻿namespace TaskManagement.Application.Commands.Projetos;
 
-public class UpsertProjetoCommandHandler : IRequestHandler<UpsertProjetoCommand, BaseResponse<Guid>>
+public class UpsertProjetoCommandHandler(IRepository<ProjetoEntity> repository, IMapper mapper) : IRequestHandler<UpsertProjetoCommand, BaseResponse<Guid>>
 {
-    private readonly IRepository<ProjetoEntity> _repository;
-    private readonly IMapper _mapper;
-
-    public UpsertProjetoCommandHandler(IRepository<ProjetoEntity> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
+    private readonly IRepository<ProjetoEntity> _repository = repository;
+    private readonly IMapper _mapper = mapper;
 
     private async Task<BaseResponse<Guid>> Insert(ProjetoEntity projeto, CancellationToken cancellationToken)
     {

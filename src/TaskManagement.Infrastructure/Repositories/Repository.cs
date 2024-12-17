@@ -11,11 +11,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         _dbSet = _context.Set<TEntity>();
     }
 
-    public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-        return entity ?? throw new InvalidOperationException("Entity not found.");
-    }
+    #region Custom
 
     public async Task<IEnumerable<TarefaEntity>> GetObjectsWithAnotherAsync(Guid id, CancellationToken cancellationToken)
     {
@@ -25,13 +21,36 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        return entities.Any() ? entities : new List<TarefaEntity>();
+        return entities.Count != 0 ? entities : [];
+    }
+
+    #endregion
+
+    #region Generic
+
+    public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        return entity ?? throw new InvalidOperationException("Entity not found.");
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<TEntity>> GetSpecificAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
+    {
+        var query = _dbSet.AsNoTracking();
+
+        if (predicate != null)
+        {
+            query = query.Where(predicate);
+        }
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
 
     public async Task<Guid> AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
@@ -52,7 +71,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         var entityInContext = await _dbSet
-            .FirstOrDefaultAsync(e => e.Id == entity.Id, cancellationToken); 
+            .FirstOrDefaultAsync(e => e.Id == entity.Id, cancellationToken);
 
         if (entityInContext != null)
         {
@@ -78,4 +97,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         }
         return result;
     }
+
+    #endregion
 }

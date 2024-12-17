@@ -1,22 +1,26 @@
-﻿using TaskManagement.Application.Commands.Tarefas;
-
-namespace TaskManagement.Api.Controllers;
+﻿namespace TaskManagement.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TarefaController : ControllerBase
+public class TarefaController : BaseController
 {
-    private readonly IMediator _mediator;
-
-    public TarefaController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
+    public TarefaController(IMediator mediator) : base(mediator) { }
 
     [HttpPost]
-    public async Task<IActionResult> Create(UpsertTarefaCommand command)
+    public async Task<ActionResult<BaseResponse<Guid>>> Post(UpsertTarefaCommand command)
     {
-        var result = await _mediator.Send(command);
-        return CreatedAtAction(nameof(Create), new { id = result }, result);
+        return await HandleCommand(command);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<BaseResponse<ICollection<TarefaDto>>>> Get([FromQuery] Guid id)
+    {
+        return await HandleQuery(new GetTarefaQuery() { Id = id });
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<BaseResponse<TarefaDto>>> Delete(Guid id)
+    {
+        return await HandleCommand(new DeleteTarefaCommand() { Id = id });
     }
 }

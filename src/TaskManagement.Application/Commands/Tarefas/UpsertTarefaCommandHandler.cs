@@ -1,15 +1,12 @@
 ﻿namespace TaskManagement.Application.Commands.Tarefas;
 
-public class UpsertTarefaCommandHandler : IRequestHandler<UpsertTarefaCommand, BaseResponse<Guid>>
+public class UpsertTarefaCommandHandler(
+    IRepository<TarefaEntity> repository,
+    IMapper mapper) : IRequestHandler<UpsertTarefaCommand, BaseResponse<Guid>>
 {
-    private readonly IRepository<TarefaEntity> _repository;
-    private readonly IMapper _mapper;
-
-    public UpsertTarefaCommandHandler(IRepository<TarefaEntity> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
+    private readonly IRepository<TarefaEntity> _repository = repository;
+    private readonly IMapper _mapper = mapper;
+    private readonly int _maxResults = 20;
 
     private async Task<BaseResponse<Guid>> Insert(TarefaEntity tarefa, CancellationToken cancellationToken)
     {
@@ -19,9 +16,9 @@ public class UpsertTarefaCommandHandler : IRequestHandler<UpsertTarefaCommand, B
 
     private async Task<BaseResponse<Guid>> Update(TarefaEntity tarefa, CancellationToken cancellationToken)
     {
-        var existingProjeto = await _repository.GetByIdAsync(tarefa.Id, cancellationToken);
+        var existingTarefa = await _repository.GetByIdAsync(tarefa.Id, cancellationToken);
 
-        if (existingProjeto is null)
+        if (existingTarefa == null)
         {
             return new BaseResponse<Guid>(Guid.Empty, false, $"Tarefa {tarefa.Id} não encontrada.");
         }
@@ -30,28 +27,38 @@ public class UpsertTarefaCommandHandler : IRequestHandler<UpsertTarefaCommand, B
         return new BaseResponse<Guid>(tarefa.Id);
     }
 
+    private async Task<bool> ValidateRecordLimit(UpsertTarefaCommand request, CancellationToken cancellationToken)
+    {
+        bool greaterThan = false;
+        var tasks = await _repository.GetSpecificAsync(t => request.ProjetoId.Equals(t.ProjetoId), cancellationToken);
+
+        if (tasks is null)
+        {
+            return greaterThan;
+        }
+
+        greaterThan = tasks.Count() >= _maxResults;
+
+        return greaterThan;
+    }
+
     public async Task<BaseResponse<Guid>> Handle(UpsertTarefaCommand request, CancellationToken cancellationToken)
     {
-        var tarefa = await _repository.GetObjectsWithAnotherAsync(request.ProjetoId, cancellationToken);
+        try
+        {
+            bool maxResults = await ValidateRecordLimit(request, cancellationToken);
 
-        //if (projeto == null)
-        //{
-        //    throw new InvalidOperationException("Projeto não encontrado.");
-        //}
+            if (maxResults)
+            {
+                return new BaseResponse<Guid>(Guid.Empty, false, $"Número de Tarefas maior que o permitido: '{_maxResults}'");
+            }
 
-        //// Verificar limite de tarefas
-        //if (projeto.Tarefas.Count >= 20)
-        //{
-        //    throw new InvalidOperationException("O projeto já atingiu o limite de 20 tarefas.");
-        //}
-
-        //// Mapear e adicionar a tarefa
-        //var tarefa = _mapper.Map<TarefaEntity>(request);
-        //projeto.Tarefas.Add(tarefa);
-
-        //// Salvar alterações
-        //await _projetoRepository.UpdateAsync(projeto, cancellationToken);
-        //return tarefa.Id;
-        return null;
+            var tarefa = _mapper.Map<TarefaEntity>(request);
+            return request.Id.Equals(Guid.Empty) ? await Insert(tarefa, cancellationToken) : await Update(tarefa, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<Guid>(Guid.Empty, false, ex.Message);
+        }
     }
 }

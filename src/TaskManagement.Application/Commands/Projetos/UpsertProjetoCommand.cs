@@ -1,6 +1,4 @@
-﻿using TaskManagement.Domain.Contracts;
-
-namespace TaskManagement.Application.Commands.Projetos;
+﻿namespace TaskManagement.Application.Commands.Projetos;
 
 public class UpsertProjetoCommand : IRequest<BaseResponse<Guid>>
 {

@@ -1,5 +1,3 @@
-using TaskManagement.Api.IoC;
-
 namespace TaskManagement.Api;
 
 public static class Program

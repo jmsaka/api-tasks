@@ -2,6 +2,8 @@
 
 public class UpsertTarefaCommandValidator : AbstractValidator<UpsertTarefaCommand>
 {
+    private static readonly string[] PrioridadesValidas = ["Baixa", "Média", "Alta"];
+
     public UpsertTarefaCommandValidator()
     {
         RuleFor(t => t.Titulo)
@@ -15,7 +17,7 @@ public class UpsertTarefaCommandValidator : AbstractValidator<UpsertTarefaComman
             .GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("A data de vencimento deve ser no futuro.");
 
         RuleFor(t => t.Prioridade)
-            .Must(p => new[] { "Baixa", "Média", "Alta" }.Contains(p))
-            .WithMessage("A prioridade deve ser 'Baixa', 'Média' ou 'Alta'.");
+           .Must(p => PrioridadesValidas.Contains(p))
+           .WithMessage("A prioridade deve ser 'Baixa', 'Média' ou 'Alta'.");
     }
 }

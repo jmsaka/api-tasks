@@ -1,6 +1,4 @@
-﻿using TaskManagement.Domain.Interfaces;
-
-namespace TaskManagement.Domain.Entities;
+﻿namespace TaskManagement.Domain.Entities;
 
 public class TarefaEntity : IEntity
 {

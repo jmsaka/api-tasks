@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Application.Queries;
+﻿namespace TaskManagement.Application.Queries.Projetos;
 
 public class GetProjetoQueryHandler : IRequestHandler<GetProjetoQuery, BaseResponse<ICollection<ProjetoDto>>>
 {

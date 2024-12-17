@@ -1,6 +1,4 @@
-﻿using TaskManagement.Application.Commands.Projetos;
-
-namespace TaskManagement.Application.Validators;
+﻿namespace TaskManagement.Application.Validators;
 
 public class UpsertProjetoCommandValidator : AbstractValidator<UpsertProjetoCommand>
 {

@@ -1,13 +1,8 @@
 using AutoMapper;
-using Moq;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using TaskManagement.Application.Commands.Projetos;
 using TaskManagement.Application.Profiles;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Interfaces;
-using Xunit;
 
 namespace TaskManagement.Test
 {

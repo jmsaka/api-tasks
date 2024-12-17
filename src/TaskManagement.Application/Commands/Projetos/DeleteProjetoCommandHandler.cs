@@ -1,13 +1,8 @@
 ﻿namespace TaskManagement.Application.Commands.Projetos;
 
-public class DeleteProjetoCommandHandler : IRequestHandler<DeleteProjetoCommand, BaseResponse<ProjetoDto>>
+public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository) : IRequestHandler<DeleteProjetoCommand, BaseResponse<ProjetoDto>>
 {
-    private readonly IRepository<ProjetoEntity> _repository;
-
-    public DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository)
-    {
-        _repository = repository;
-    }
+    private readonly IRepository<ProjetoEntity> _repository = repository;
 
     private async Task<string> DeleteAsync(DeleteProjetoCommand request, CancellationToken cancellationToken)
     {
