@@ -22,7 +22,7 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssembly(typeof(UpsertTarefaCommandHandler).Assembly);
             cfg.RegisterServicesFromAssembly(typeof(UpsertProjetoCommandHandler).Assembly);
-            // Adicione outros handlers/assemblies conforme necessário
+            cfg.RegisterServicesFromAssembly(typeof(DeleteProjetoCommandHandler).Assembly);
         });
 
 

@@ -18,9 +18,9 @@ public class ProjetoController : BaseController
         return await HandleQuery(new GetProjetoQuery() { Id = id });
     }
 
-    //[HttpDelete("{id}")]
-    //public async Task<ActionResult<BaseResponse<AtendimentoEntity>>> Delete(int id)
-    //{
-    //    return await HandleCommand(new DeleteAtendimentoCommand() { Id = id });
-    //}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<BaseResponse<ProjetoDto>>> Delete(Guid id)
+    {
+        return await HandleCommand(new DeleteProjetoCommand() { Id = id });
+    }
 }

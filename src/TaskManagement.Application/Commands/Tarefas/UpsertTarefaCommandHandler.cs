@@ -32,7 +32,7 @@ public class UpsertTarefaCommandHandler : IRequestHandler<UpsertTarefaCommand, B
 
     public async Task<BaseResponse<Guid>> Handle(UpsertTarefaCommand request, CancellationToken cancellationToken)
     {
-        var tarefa = await _repository.GetObjectWithAnotherAsync(request.ProjetoId, cancellationToken);
+        var tarefa = await _repository.GetObjectsWithAnotherAsync(request.ProjetoId, cancellationToken);
 
         //if (projeto == null)
         //{

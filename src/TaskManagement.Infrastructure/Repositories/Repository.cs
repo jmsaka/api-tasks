@@ -1,7 +1,4 @@
-﻿using TaskManagement.Domain.Interfaces;
-using TaskManagement.Infrastructure.Data;
-
-namespace TaskManagement.Infrastructure.Repositories;
+﻿namespace TaskManagement.Infrastructure.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 {
@@ -20,10 +17,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return entity ?? throw new InvalidOperationException("Entity not found.");
     }
 
-    public async Task<TEntity> GetObjectWithAnotherAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TarefaEntity>> GetObjectsWithAnotherAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-        return entity ?? Activator.CreateInstance<TEntity>();
+        var entities = await _context.Tarefas
+            .Where(p => p.ProjetoId == id)
+            .Include(p => p.Projeto)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return entities.Any() ? entities : new List<TarefaEntity>();
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
@@ -64,13 +66,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
+        bool result = false;
         var entity = await GetByIdAsync(id, cancellationToken);
         if (entity != null)
         {
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            result = true;
         }
+        return result;
     }
 }
