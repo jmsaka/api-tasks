@@ -1,4 +1,6 @@
-﻿namespace TaskManagement.Api.Controllers;
+﻿using TaskManagement.Application.Commands.Tarefas;
+
+namespace TaskManagement.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -1,4 +1,8 @@
-﻿namespace TaskManagement.Api.IoC;
+﻿using TaskManagement.Application.Commands.Tarefas;
+using TaskManagement.Application.Profiles;
+using TaskManagement.Application.Validators;
+
+namespace TaskManagement.Api.IoC;
 
 public static class DependencyInjection
 {

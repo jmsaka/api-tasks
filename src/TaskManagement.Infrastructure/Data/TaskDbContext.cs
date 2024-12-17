@@ -7,7 +7,6 @@ public class TaskDbContext : DbContext
 
     public TaskDbContext(DbContextOptions<TaskDbContext> options) : base(options)
     {
-        // Força a criação do banco na primeira execução
         Database.EnsureCreated();
     }
 

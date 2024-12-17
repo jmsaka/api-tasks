@@ -1,13 +1,15 @@
-﻿namespace TaskManagement.Application.Commands.Projetos;
+﻿using TaskManagement.Domain.Interfaces;
+
+namespace TaskManagement.Application.Commands.Projetos;
 
 public class CreateProjetoCommandHandler : IRequestHandler<CreateProjetoCommand, Guid>
 {
-    private readonly TaskDbContext _context;
+    private readonly IRepository<ProjetoEntity> _repository;
     private readonly IMapper _mapper;
 
-    public CreateProjetoCommandHandler(TaskDbContext context, IMapper mapper)
+    public CreateProjetoCommandHandler(IRepository<ProjetoEntity> repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
     }
 
@@ -16,9 +18,6 @@ public class CreateProjetoCommandHandler : IRequestHandler<CreateProjetoCommand,
         var projeto = _mapper.Map<ProjetoEntity>(request);
         projeto.DataCriacao = DateTime.UtcNow;
 
-        _context.Projetos.Add(projeto);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return projeto.Id;
+        return await _repository.AddAsync(projeto, cancellationToken);
     }
 }

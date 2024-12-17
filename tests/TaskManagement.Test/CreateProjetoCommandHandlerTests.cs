@@ -1,28 +1,59 @@
-namespace TaskManagement.Test;
+using AutoMapper;
+using Moq;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using TaskManagement.Application.Commands.Projetos;
+using TaskManagement.Application.Profiles;
+using TaskManagement.Domain.Entities;
+using TaskManagement.Domain.Interfaces;
+using Xunit;
 
-public class CreateProjetoCommandHandlerTests
+namespace TaskManagement.Test
 {
-    private readonly Mock<TaskDbContext> _mockContext;
-    private readonly IMapper _mapper;
-
-    public CreateProjetoCommandHandlerTests()
+    public class CreateProjetoCommandHandlerTests
     {
-        _mockContext = new Mock<TaskDbContext>();
-        var config = new MapperConfiguration(cfg => cfg.AddProfile(new ProjetoProfile()));
-        _mapper = config.CreateMapper();
-    }
+        private readonly Mock<IRepository<ProjetoEntity>> _mockRepository;
+        private readonly IMapper _mapper;
 
-    [Fact]
-    public async Task Handle_ValidCommand_ShouldReturnGuid()
-    {
-        // Arrange
-        var handler = new CreateProjetoCommandHandler(_mockContext.Object, _mapper);
-        var command = new CreateProjetoCommand { Nome = "Projeto Teste", Descricao = "Descrição Teste" };
+        public CreateProjetoCommandHandlerTests()
+        {
+            // Mock do repositório genérico
+            _mockRepository = new Mock<IRepository<ProjetoEntity>>();
 
-        // Act
-        var result = await handler.Handle(command, default);
+            // Configuração do AutoMapper
+            var config = new MapperConfiguration(cfg => cfg.AddProfile(new ProjetoProfile()));
+            _mapper = config.CreateMapper();
+        }
 
-        // Assert
-        Assert.IsType<Guid>(result);
+        [Fact]
+        public async Task Handle_ValidCommand_ShouldReturnGuid()
+        {
+            // Arrange
+            var command = new CreateProjetoCommand
+            {
+                Nome = "Projeto Teste",
+                Descricao = "Descrição Teste"
+            };
+
+            var projetoId = Guid.NewGuid();
+
+            // Configurar o mock para o método AddAsync retornar um Guid
+            _mockRepository
+                .Setup(repo => repo.AddAsync(It.IsAny<ProjetoEntity>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(projetoId);
+
+            var handler = new CreateProjetoCommandHandler(_mockRepository.Object, _mapper);
+
+            // Act
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsType<Guid>(result);
+            Assert.Equal(projetoId, result);
+
+            // Verificar se o método AddAsync foi chamado exatamente uma vez
+            _mockRepository.Verify(repo => repo.AddAsync(It.IsAny<ProjetoEntity>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
     }
 }

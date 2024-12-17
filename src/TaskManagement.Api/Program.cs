@@ -1,6 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-
 namespace TaskManagement.Api;
 
 public static class Program
@@ -9,20 +6,12 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Configurar o Kestrel para escutar na porta 51000
-        builder.WebHost.ConfigureKestrel(options =>
-        {
-            options.Listen(IPAddress.Any, 51000); 
-        });
-
         // Add services to the container.
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
-        ////
 
         builder.Services.AddDbContext<TaskDbContext>(options =>
         {
@@ -33,7 +22,15 @@ public static class Program
             options.EnableSensitiveDataLogging();
         });
 
-        ////
+        var environmentValue = builder.Configuration["Environment"];
+
+        if (string.Equals(environmentValue, "Production", StringComparison.Ordinal))
+        {
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Listen(IPAddress.Any, 51000);
+            });
+        }
 
         var app = builder.Build();
 
@@ -51,11 +48,21 @@ public static class Program
 
         app.MapControllers();
 
-        // Executar migrações automaticamente na inicialização
         using (var scope = app.Services.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetRequiredService<TaskDbContext>();
-            dbContext.Database.Migrate(); // Aplica as migrações
+            try
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<TaskDbContext>();
+
+                if (!dbContext.Database.CanConnect())
+                {
+                    dbContext.Database.Migrate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         app.Run();
