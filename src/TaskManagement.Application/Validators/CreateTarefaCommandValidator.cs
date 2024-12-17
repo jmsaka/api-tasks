@@ -1,8 +1,8 @@
 ﻿namespace TaskManagement.Application.Validators;
 
-public class CreateTarefaCommandValidator : AbstractValidator<CreateTarefaCommand>
+public class UpsertTarefaCommandValidator : AbstractValidator<UpsertTarefaCommand>
 {
-    public CreateTarefaCommandValidator()
+    public UpsertTarefaCommandValidator()
     {
         RuleFor(t => t.Titulo)
             .NotEmpty().WithMessage("O título da tarefa é obrigatório.")

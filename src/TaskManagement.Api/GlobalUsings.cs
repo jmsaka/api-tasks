@@ -6,3 +6,7 @@ global using FluentValidation;
 global using NLog.Extensions.Logging;
 global using System.Net;
 global using TaskManagement.Application.Commands.Projetos;
+global using TaskManagement.Api.Controllers.Base;
+global using TaskManagement.Application.Queries;
+global using TaskManagement.Domain.Contracts;
+global using TaskManagement.Domain.Dtos;

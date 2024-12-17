@@ -8,13 +8,13 @@ using Xunit;
 
 namespace TaskManagement.Test;
 
-public class CreateTarefaCommandHandlerTests
+public class UpsertTarefaCommandHandlerTests
 {
     private readonly Mock<IRepository<ProjetoEntity>> _mockProjetoRepository;
     private readonly Mock<IRepository<TarefaEntity>> _mockTarefaRepository;
     private readonly IMapper _mapper;
 
-    public CreateTarefaCommandHandlerTests()
+    public UpsertTarefaCommandHandlerTests()
     {
         // Configuração dos mocks
         _mockProjetoRepository = new Mock<IRepository<ProjetoEntity>>();
@@ -49,13 +49,13 @@ public class CreateTarefaCommandHandlerTests
             .ReturnsAsync(tarefaId); // Retorna o Guid corretamente
 
 
-        var handler = new CreateTarefaCommandHandler(
+        var handler = new UpsertTarefaCommandHandler(
             _mockProjetoRepository.Object,
             _mockTarefaRepository.Object,
             _mapper
         );
 
-        var command = new CreateTarefaCommand
+        var command = new UpsertTarefaCommand
         {
             ProjetoId = projetoId,
             Titulo = "Nova Tarefa",

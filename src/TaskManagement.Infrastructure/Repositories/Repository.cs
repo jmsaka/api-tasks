@@ -1,13 +1,14 @@
 ﻿using TaskManagement.Domain.Interfaces;
+using TaskManagement.Infrastructure.Data;
 
 namespace TaskManagement.Infrastructure.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 {
-    private readonly DbContext _context;
+    private readonly TaskDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
-    public Repository(DbContext context)
+    public Repository(TaskDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();
@@ -15,19 +16,19 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await _dbSet.FindAsync(id, cancellationToken);
+        var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         return entity ?? throw new InvalidOperationException("Entity not found.");
     }
 
     public async Task<TEntity> GetObjectWithAnotherAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await _dbSet.FindAsync(id, cancellationToken);
+        var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         return entity ?? Activator.CreateInstance<TEntity>();
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _dbSet.ToListAsync(cancellationToken);
+        return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<Guid> AddAsync(TEntity entity, CancellationToken cancellationToken)
@@ -48,7 +49,18 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
-        _dbSet.Update(entity);
+        var entityInContext = await _dbSet
+            .FirstOrDefaultAsync(e => e.Id == entity.Id, cancellationToken); 
+
+        if (entityInContext != null)
+        {
+            _context.Entry(entityInContext).CurrentValues.SetValues(entity);
+        }
+        else
+        {
+            _dbSet.Update(entity);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
     }
 

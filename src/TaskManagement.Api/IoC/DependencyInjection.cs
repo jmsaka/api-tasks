@@ -1,6 +1,8 @@
 ﻿using TaskManagement.Application.Commands.Tarefas;
 using TaskManagement.Application.Profiles;
 using TaskManagement.Application.Validators;
+using TaskManagement.Domain.Interfaces;
+using TaskManagement.Infrastructure.Repositories;
 
 namespace TaskManagement.Api.IoC;
 
@@ -8,23 +10,24 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Configuração do DbContext
-        services.AddDbContext<TaskDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
         // AutoMapper
         services.AddAutoMapper(typeof(TarefaProfile).Assembly);
 
         // FluentValidation
-        services.AddValidatorsFromAssembly(typeof(CreateTarefaCommandValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(UpsertTarefaCommandValidator).Assembly);
 
 
         // MediatR
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateTarefaCommandHandler).Assembly));
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(UpsertTarefaCommandHandler).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(UpsertProjetoCommandHandler).Assembly);
+            // Adicione outros handlers/assemblies conforme necessário
+        });
 
 
         // Registro de Handlers e Validators
-        services.AddScoped<IRequestHandler<CreateTarefaCommand, Guid>, CreateTarefaCommandHandler>();
+        services.AddScoped<IRequestHandler<UpsertTarefaCommand, BaseResponse<Guid>>, UpsertTarefaCommandHandler>();
 
         // NLog
         services.AddLogging(loggingBuilder =>
@@ -33,6 +36,9 @@ public static class DependencyInjection
             loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
             loggingBuilder.AddNLog(configuration);
         });
+
+        // Repository
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         return services;
     }

@@ -2,9 +2,9 @@
 
 namespace TaskManagement.Application.Validators;
 
-public class CreateProjetoCommandValidator : AbstractValidator<CreateProjetoCommand>
+public class UpsertProjetoCommandValidator : AbstractValidator<UpsertProjetoCommand>
 {
-    public CreateProjetoCommandValidator()
+    public UpsertProjetoCommandValidator()
     {
         RuleFor(c => c.Nome)
             .NotEmpty().WithMessage("O nome do projeto é obrigatório.")

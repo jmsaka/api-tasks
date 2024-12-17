@@ -1,6 +1,8 @@
-﻿namespace TaskManagement.Domain.Entities;
+﻿using TaskManagement.Domain.Interfaces;
 
-public class TarefaEntity
+namespace TaskManagement.Domain.Entities;
+
+public class TarefaEntity : IEntity
 {
     public Guid Id { get; set; }
     public required string Titulo { get; set; }

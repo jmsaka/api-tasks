@@ -1,6 +1,8 @@
-﻿namespace TaskManagement.Domain.Entities;
+﻿using TaskManagement.Domain.Interfaces;
 
-public class ProjetoEntity
+namespace TaskManagement.Domain.Entities;
+
+public class ProjetoEntity : IEntity
 {
     public Guid Id { get; set; }
     public string Nome { get; set; }

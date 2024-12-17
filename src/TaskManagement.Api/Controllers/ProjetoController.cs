@@ -1,8 +1,4 @@
-﻿using TaskManagement.Api.Controllers.Base;
-using TaskManagement.Application.Commands.Projetos;
-using TaskManagement.Domain.Contracts;
-
-namespace TaskManagement.Api.Controllers;
+﻿namespace TaskManagement.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -11,23 +7,16 @@ public class ProjetoController : BaseController
     public ProjetoController(IMediator mediator) : base(mediator) { }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateProjetoCommand command)
+    public async Task<ActionResult<BaseResponse<Guid>>> Post(UpsertProjetoCommand command)
     {
-        var result = await _mediator.Send(command);
-        return CreatedAtAction(nameof(Create), new { id = result }, result);
+        return await HandleCommand(command);
     }
 
-    //[HttpGet]
-    //public async Task<ActionResult<BaseResponse<ICollection<AtendimentoDto>>>> Get([FromQuery] int id)
-    //{
-    //    return await HandleQuery(new GetAtendimentoQuery() { Id = id });
-    //}
-
-    //[HttpPost]
-    //public async Task<ActionResult<BaseResponse<AtendimentoEntity>>> Post([FromBody] UpsertAtendimentoCommand command)
-    //{
-    //    return await HandleCommand(command);
-    //}
+    [HttpGet]
+    public async Task<ActionResult<BaseResponse<ICollection<ProjetoDto>>>> Get([FromQuery] Guid id)
+    {
+        return await HandleQuery(new GetProjetoQuery() { Id = id });
+    }
 
     //[HttpDelete("{id}")]
     //public async Task<ActionResult<BaseResponse<AtendimentoEntity>>> Delete(int id)

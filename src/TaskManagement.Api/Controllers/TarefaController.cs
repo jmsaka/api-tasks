@@ -14,7 +14,7 @@ public class TarefaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateTarefaCommand command)
+    public async Task<IActionResult> Create(UpsertTarefaCommand command)
     {
         var result = await _mediator.Send(command);
         return CreatedAtAction(nameof(Create), new { id = result }, result);

@@ -3,5 +3,7 @@ global using MediatR;
 global using FluentValidation;
 global using AutoMapper;
 global using TaskManagement.Domain.Entities;
-global using TaskManagement.Infrastructure.Data;
 global using Microsoft.EntityFrameworkCore;
+global using TaskManagement.Domain.Interfaces;
+global using TaskManagement.Domain.Contracts;
+global using TaskManagement.Domain.Dtos;

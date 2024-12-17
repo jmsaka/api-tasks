@@ -6,6 +6,7 @@ public class ProjetoProfile : Profile
 {
     public ProjetoProfile()
     {
-        CreateMap<CreateProjetoCommand, ProjetoEntity>();
+        CreateMap<UpsertProjetoCommand, ProjetoEntity>().ReverseMap();
+        CreateMap<ProjetoEntity, ProjetoDto>().ReverseMap();
     }
 }

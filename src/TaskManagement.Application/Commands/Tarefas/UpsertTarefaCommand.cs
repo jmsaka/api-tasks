@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace TaskManagement.Application.Commands.Tarefas;
 
-namespace TaskManagement.Application.Commands.Tarefas;
-
-public class CreateTarefaCommand : IRequest<Guid>
+public class UpsertTarefaCommand : IRequest<BaseResponse<Guid>>
 {
+    public Guid Id { get; set; }
     public Guid ProjetoId { get; set; }
     public required string Titulo { get; set; }
     public required string Descricao { get; set; }

@@ -1,3 +1,5 @@
+using TaskManagement.Api.IoC;
+
 namespace TaskManagement.Api;
 
 public static class Program
@@ -5,8 +7,6 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,6 +21,9 @@ public static class Program
             );
             options.EnableSensitiveDataLogging();
         });
+
+        // Add services to the container.
+        DependencyInjection.AddApplicationServices(builder.Services, builder.Configuration);
 
         var environmentValue = builder.Configuration["Environment"];
 
