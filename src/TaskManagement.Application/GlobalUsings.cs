@@ -8,3 +8,6 @@ global using TaskManagement.Domain.Contracts;
 global using TaskManagement.Domain.Dtos;
 global using TaskManagement.Domain.Entities;
 global using TaskManagement.Domain.Interfaces;
+global using TaskManagement.CrossCutting.Helpers;
+global using TaskManagement.Domain.Enums;
+global using TaskManagement.Application.Commands.Comentarios;

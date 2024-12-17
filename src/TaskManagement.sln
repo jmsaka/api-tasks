@@ -24,11 +24,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Solution Items", "0 - S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Test", "..\tests\TaskManagement.Test\TaskManagement.Test.csproj", "{B6C7B05F-F7C1-4AC9-9A22-B9EC8AFA136C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Tests", "5 - Tests", "{F55E0A43-81A0-46F1-8FC7-835ED76FFCE7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6 - Tests", "6 - Tests", "{F55E0A43-81A0-46F1-8FC7-835ED76FFCE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Application", "TaskManagement.Application\TaskManagement.Application.csproj", "{23A3E4A9-777F-4940-8020-DA9AA33A960C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{9141E19D-853A-44BB-8DA0-8089C775C2E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.CrossCutting", "TaskManagement.CrossCutting\TaskManagement.CrossCutting.csproj", "{C69A83DE-6565-4542-B9A0-52C782AD5A26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Cross-Cutting", "5 - Cross-Cutting", "{AE82683F-6FBC-4EA2-AD92-4051A2B5EBE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +60,10 @@ Global
 		{23A3E4A9-777F-4940-8020-DA9AA33A960C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23A3E4A9-777F-4940-8020-DA9AA33A960C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23A3E4A9-777F-4940-8020-DA9AA33A960C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C69A83DE-6565-4542-B9A0-52C782AD5A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C69A83DE-6565-4542-B9A0-52C782AD5A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C69A83DE-6565-4542-B9A0-52C782AD5A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C69A83DE-6565-4542-B9A0-52C782AD5A26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +74,6 @@ Global
 		{8C696D22-057F-4A14-8653-5035D56BC8D5} = {2BCC7E4C-C5A3-48F0-B7E3-4E8D9E03D2C1}
 		{B6C7B05F-F7C1-4AC9-9A22-B9EC8AFA136C} = {F55E0A43-81A0-46F1-8FC7-835ED76FFCE7}
 		{23A3E4A9-777F-4940-8020-DA9AA33A960C} = {9141E19D-853A-44BB-8DA0-8089C775C2E8}
+		{C69A83DE-6565-4542-B9A0-52C782AD5A26} = {AE82683F-6FBC-4EA2-AD92-4051A2B5EBE7}
 	EndGlobalSection
 EndGlobal

@@ -7,5 +7,6 @@ public class UpsertTarefaCommand : IRequest<BaseResponse<Guid>>
     public required string Titulo { get; set; }
     public required string Descricao { get; set; }
     public DateTime DataVencimento { get; set; }
-    public required string Prioridade { get; set; } // Valores: "Baixa", "Média", "Alta"
+    public StatusTarefa Status { get; set; } = StatusTarefa.Pendente;
+    public PrioridadeTarefa Prioridade { get; set; } = PrioridadeTarefa.Media;
 }

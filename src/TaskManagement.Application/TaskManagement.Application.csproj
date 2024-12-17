@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskManagement.CrossCutting\TaskManagement.CrossCutting.csproj" />
     <ProjectReference Include="..\TaskManagement.Infrastructure\TaskManagement.Infrastructure.csproj" />
   </ItemGroup>
 

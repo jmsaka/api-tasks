@@ -23,6 +23,11 @@ public class UpsertTarefaCommandHandler(
             return new BaseResponse<Guid>(Guid.Empty, false, $"Tarefa {tarefa.Id} não encontrada.");
         }
 
+        if (existingTarefa.Prioridade != tarefa.Prioridade)
+        {
+            return new BaseResponse<Guid>(Guid.Empty, false, "Não é permitido alterar a prioridade de uma tarefa depois que ela foi criada.");
+        }
+
         await _repository.UpdateAsync(tarefa, cancellationToken);
         return new BaseResponse<Guid>(tarefa.Id);
     }

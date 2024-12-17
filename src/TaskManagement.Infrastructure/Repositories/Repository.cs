@@ -24,6 +24,54 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
         return entities.Count != 0 ? entities : [];
     }
 
+    public async Task<List<ProjetoEntity>> GetProjetoCompleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var query = _context.Projetos
+            .Include(p => p.Tarefas)
+            .ThenInclude(p => p.Comentarios)
+            .AsNoTracking();
+
+        if (id != Guid.Empty)
+        {
+            query = query.Where(p => p.Id == id);
+        }
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<ComentarioEntity>> GetComentariosPorTarefasAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var query = _context.Comentarios
+            .Include(p => p.Tarefa)
+            .AsNoTracking();
+
+        if (id != Guid.Empty)
+        {
+            query = query.Where(p => p.TarefaId == id);
+        }
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<TarefaEntity>> GetTarefasPorProjetoAsync(Guid? id, CancellationToken cancellationToken)
+    {
+        if (id.HasValue && id != Guid.Empty)
+        {
+            // Busca tarefas vinculadas ao Projeto específico
+            return await _context.Tarefas
+                .AsNoTracking()
+                .Where(t => t.ProjetoId == id.Value)
+                .Include(t => t.Projeto)
+                .ToListAsync(cancellationToken);
+        }
+
+        // Busca todas as tarefas
+        return await _context.Tarefas
+            .AsNoTracking()
+            .Include(t => t.Projeto)
+            .ToListAsync(cancellationToken);
+    }
+
     #endregion
 
     #region Generic

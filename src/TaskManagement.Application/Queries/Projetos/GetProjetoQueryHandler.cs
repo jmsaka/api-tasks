@@ -1,37 +1,33 @@
 ﻿namespace TaskManagement.Application.Queries.Projetos;
 
-public class GetProjetoQueryHandler : IRequestHandler<GetProjetoQuery, BaseResponse<ICollection<ProjetoDto>>>
+public class GetProjetoQueryHandler(IRepository<ProjetoEntity> repository, IMapper mapper) : IRequestHandler<GetProjetoQuery, BaseResponse<ICollection<ProjetoDto>>>
 {
-    private readonly IRepository<ProjetoEntity> _repository;
-    private readonly IMapper _mapper;
-
-    public GetProjetoQueryHandler(IRepository<ProjetoEntity> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
+    private readonly IRepository<ProjetoEntity> _repository = repository;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<BaseResponse<ICollection<ProjetoDto>>> Handle(GetProjetoQuery request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         try
         {
-            if (request == null || request.Id.Equals(Guid.Empty))
+            var projetos = await _repository.GetProjetoCompleteAsync(request.Id, cancellationToken);
+
+            if (projetos == null || projetos.Count == 0)
             {
-                return new BaseResponse<ICollection<ProjetoDto>>(_mapper.Map<ICollection<ProjetoDto>>(await _repository.GetAllAsync(cancellationToken)));
+                var mensagem = request.Id == Guid.Empty
+                    ? "Nenhum projeto encontrado."
+                    : $"Projeto com ID {request.Id} não encontrado.";
+
+                return new BaseResponse<ICollection<ProjetoDto>>(null, false, mensagem);
             }
 
-            var atendimento = _mapper.Map<ProjetoDto>(await _repository.GetByIdAsync(request.Id, cancellationToken));
-
-            if (atendimento == null)
-            {
-                return new BaseResponse<ICollection<ProjetoDto>>(null, false, $"Projeto com ID {request.Id} não encontrado.");
-            }
-
-            return new BaseResponse<ICollection<ProjetoDto>>([atendimento]);
+            var projetoDtos = _mapper.Map<ICollection<ProjetoDto>>(projetos);
+            return new BaseResponse<ICollection<ProjetoDto>>(projetoDtos);
         }
         catch (Exception ex)
         {
-            return new BaseResponse<ICollection<ProjetoDto>>(null, false, ex.Message);
+            return new BaseResponse<ICollection<ProjetoDto>>(null, false, $"Erro ao buscar projetos: {ex.Message}");
         }
     }
 }

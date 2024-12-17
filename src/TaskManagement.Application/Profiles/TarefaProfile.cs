@@ -5,8 +5,8 @@ public class TarefaProfile : Profile
     public TarefaProfile()
     {
         CreateMap<UpsertTarefaCommand, TarefaEntity>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            //.ForMember(dest => dest.Historico, opt => opt.Ignore())
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => "Pendente"));
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+
+        CreateMap<TarefaEntity, TarefaDto>();
     }
 }

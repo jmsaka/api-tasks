@@ -2,7 +2,10 @@
 
 public class UpsertTarefaCommandValidator : AbstractValidator<UpsertTarefaCommand>
 {
-    private static readonly string[] PrioridadesValidas = ["Baixa", "Média", "Alta"];
+    private static readonly string[] PrioridadesValidas = Enum.GetValues(typeof(PrioridadeTarefa))
+        .Cast<PrioridadeTarefa>()
+        .Select(p => EnumHelper.GetEnumDescription(p))
+        .ToArray();
 
     public UpsertTarefaCommandValidator()
     {
@@ -17,7 +20,7 @@ public class UpsertTarefaCommandValidator : AbstractValidator<UpsertTarefaComman
             .GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("A data de vencimento deve ser no futuro.");
 
         RuleFor(t => t.Prioridade)
-           .Must(p => PrioridadesValidas.Contains(p))
-           .WithMessage("A prioridade deve ser 'Baixa', 'Média' ou 'Alta'.");
+            .Must(p => PrioridadesValidas.Contains(EnumHelper.GetEnumDescription(p)))
+            .WithMessage("A prioridade deve ser 'Baixa', 'Média' ou 'Alta'.");
     }
 }

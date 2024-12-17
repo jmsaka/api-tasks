@@ -10,17 +10,17 @@ public class DeleteTarefaCommandHandler(IRepository<TarefaEntity> repository) : 
 
         try
         {
-            var Tarefa = await _repository.GetByIdAsync(request.Id, cancellationToken);
+            var tarefa = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-            if (Tarefa == null)
+            if (tarefa == null)
             {
                 hasErrors = "Tarefa não encontrado.";
                 return hasErrors;
             }
 
-            var Tarefas = await _repository.GetObjectsWithAnotherAsync(request.Id, cancellationToken);
+            var tarefas = await _repository.GetObjectsWithAnotherAsync(request.Id, cancellationToken);
 
-            if (Tarefas != null && Tarefas.Any())
+            if (tarefas != null && tarefas.Any())
             {
                 hasErrors = "Não é possível deletar o Tarefa. Existem relacionamentos associados.";
                 return hasErrors;
