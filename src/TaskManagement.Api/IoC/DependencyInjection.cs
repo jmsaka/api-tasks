@@ -1,6 +1,4 @@
-﻿using TaskManagement.Infrastructure.Services;
-
-namespace TaskManagement.Api.IoC;
+﻿namespace TaskManagement.Api.IoC;
 
 public static class DependencyInjection
 {

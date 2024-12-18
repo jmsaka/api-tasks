@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace TaskManagement.Api.Resources;
+﻿namespace TaskManagement.Api.Resources;
 
 public class FakeAuthenticationMiddleware
 {

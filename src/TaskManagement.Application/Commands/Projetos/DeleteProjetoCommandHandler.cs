@@ -22,7 +22,6 @@ public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository,
                 return hasErrors;
             }
 
-            // Verificar se o projeto tem tarefas pendentes
             var tarefasPendentes = await _tarefaRepository.GetSpecificAsync(
                 t => t.ProjetoId == request.Id && t.Status == StatusTarefa.Pendente,
                 cancellationToken);

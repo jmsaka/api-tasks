@@ -1,6 +1,4 @@
-﻿using TaskManagement.Domain.Dtos;
-
-namespace TaskManagement.Domain.Interfaces;
+﻿namespace TaskManagement.Domain.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : class
 {

@@ -20,20 +20,20 @@ public class DeleteTarefaCommandHandler(IRepository<TarefaEntity> repository,
                 return hasErrors;
             }
 
+            var tarefasPendentes = await _repository.GetSpecificAsync(t => t.Comentarios.Count != 0, cancellationToken);
+
+            if (tarefasPendentes.Any() || tarefa.Comentarios?.Count > 0)
+            {
+                hasErrors = "Não é possível deletar a Tarefa. Existem comentarios associados.";
+                return hasErrors;
+            }
+
             await _service.RegistrarHistoricoAsync(
                 tarefa,
                 tarefa.Id,
                 "ADM",
                 EnumHelper.GetEnumDescription(OperacaoCrud.Delete),
                 cancellationToken);
-
-            var tarefas = await _repository.GetObjectsWithAnotherAsync(request.Id, cancellationToken);
-
-            if (tarefas != null && tarefas.Any())
-            {
-                hasErrors = "Não é possível deletar o Tarefa. Existem relacionamentos associados.";
-                return hasErrors;
-            }
 
             var isDeleted = await _repository.DeleteAsync(request.Id, cancellationToken);
 

@@ -33,10 +33,10 @@ public class UpsertTarefaCommandHandler(
         }
 
         await _service.RegistrarHistoricoAsync(
-            tarefa, 
-            tarefa.Id, 
-            "ADM", 
-            EnumHelper.GetEnumDescription(OperacaoCrud.Update), 
+            tarefa,
+            tarefa.Id,
+            "ADM",
+            EnumHelper.GetEnumDescription(OperacaoCrud.Update),
             cancellationToken);
 
         if (existingTarefa.Prioridade != tarefa.Prioridade)

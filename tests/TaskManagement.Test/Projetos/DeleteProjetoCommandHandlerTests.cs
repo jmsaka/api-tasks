@@ -1,13 +1,13 @@
 ﻿namespace TaskManagement.Test.Projetos;
 
-public class DeleteProjetoHandlerTests
+public class DeleteProjetoCommandHandlerTests
 {
     private readonly Mock<IRepository<ProjetoEntity>> _projetoRepositoryMock;
     private readonly Mock<IRepository<TarefaEntity>> _tarefaRepositoryMock;
     private readonly Mock<IHistoricoAtualizacaoService> _historicoServiceMock;
     private readonly DeleteProjetoCommandHandler _handler;
 
-    public DeleteProjetoHandlerTests()
+    public DeleteProjetoCommandHandlerTests()
     {
         _projetoRepositoryMock = new Mock<IRepository<ProjetoEntity>>();
         _tarefaRepositoryMock = new Mock<IRepository<TarefaEntity>>();
@@ -29,19 +29,18 @@ public class DeleteProjetoHandlerTests
 
         var tarefasPendentes = new List<TarefaEntity>
         {
-            new TarefaEntity
-            {
+            new() {
                 Id = Guid.NewGuid(),
                 Titulo = "Tarefa Pendente",
                 Descricao = "Descrevendo Tarefa Pendente",
                 Status = StatusTarefa.Pendente,
-                ProjetoId = projetoId, 
+                ProjetoId = projetoId,
                 Projeto = projeto
             }
         };
 
         _projetoRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(projeto); 
+            .ReturnsAsync(projeto);
 
         _tarefaRepositoryMock.Setup(repo => repo.GetSpecificAsync(It.IsAny<Expression<Func<TarefaEntity, bool>>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(tarefasPendentes);
@@ -77,7 +76,7 @@ public class DeleteProjetoHandlerTests
             .ReturnsAsync(true);
 
         _tarefaRepositoryMock.Setup(repo => repo.GetSpecificAsync(It.IsAny<Expression<Func<TarefaEntity, bool>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new List<TarefaEntity>());
+            .ReturnsAsync([]);
 
         var command = new DeleteProjetoCommand { Id = projetoId };
 

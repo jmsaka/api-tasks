@@ -1,59 +1,46 @@
 ﻿namespace TaskManagement.Application.Commands.Comentarios;
 
-public class DeleteComentarioCommandHandler(IRepository<ComentarioEntity> repository,
-                                            IHistoricoAtualizacaoService service) : IRequestHandler<DeleteComentarioCommand, BaseResponse<ComentarioDto>>
+public class DeleteComentarioCommandHandler(IRepository<TarefaEntity> repository, IHistoricoAtualizacaoService service) : IRequestHandler<DeleteComentarioCommand, BaseResponse<ComentarioDto>>
 {
-    private readonly IRepository<ComentarioEntity> _repository = repository;
+    private readonly IRepository<TarefaEntity> _repository = repository;
     private readonly IHistoricoAtualizacaoService _service = service;
+
+    public async Task<BaseResponse<ComentarioDto>> Handle(DeleteComentarioCommand request, CancellationToken cancellationToken)
+    {
+        string errorMessage = await DeleteAsync(request, cancellationToken);
+        return new BaseResponse<ComentarioDto>(null, string.IsNullOrEmpty(errorMessage), errorMessage);
+    }
 
     private async Task<string> DeleteAsync(DeleteComentarioCommand request, CancellationToken cancellationToken)
     {
-        string hasErrors = string.Empty;
-
         try
         {
-            var comentario = await _repository.GetByIdAsync(request.Id, cancellationToken);
+            var tarefa = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-            if (comentario is null)
+            if (tarefa == null)
             {
-                hasErrors = "Comentario não encontrado.";
-                return hasErrors;
+                return "Comentário não encontrado.";
             }
 
             await _service.RegistrarHistoricoAsync(
-                comentario,
-                comentario.Id,
+                tarefa,
+                tarefa.Id,
                 "ADM",
                 EnumHelper.GetEnumDescription(OperacaoCrud.Delete),
                 cancellationToken);
-
-            var Tarefas = await _repository.GetComentariosPorTarefasAsync(request.Id, cancellationToken);
-
-            if (Tarefas != null && Tarefas.Count != 0)
-            {
-                hasErrors = "Não é possível deletar o Tarefa. Existem relacionamentos associados.";
-                return hasErrors;
-            }
 
             var isDeleted = await _repository.DeleteAsync(request.Id, cancellationToken);
 
             if (!isDeleted)
             {
-                hasErrors = "Falha ao deletar o Tarefa.";
+                return "Falha ao deletar o Comentário.";
             }
+
+            return string.Empty;
         }
-        catch (Exception)
+        catch
         {
-            hasErrors = "Falha ao deletar o Tarefa.";
+            return "Falha ao deletar o Comentário.";
         }
-
-        return hasErrors;
-    }
-
-    public async Task<BaseResponse<ComentarioDto>> Handle(DeleteComentarioCommand request, CancellationToken cancellationToken)
-    {
-        string hasErrors = await DeleteAsync(request, cancellationToken);
-
-        return new BaseResponse<ComentarioDto>(null, string.IsNullOrEmpty(hasErrors), hasErrors);
     }
 }

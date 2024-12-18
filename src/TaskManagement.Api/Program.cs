@@ -1,7 +1,3 @@
-using TaskManagement.Api.Resources;
-using TaskManagement.Domain.Entities;
-using TaskManagement.Domain.Enums;
-
 namespace TaskManagement.Api;
 
 public static class Program
@@ -76,5 +72,5 @@ public static class Program
         app.Run();
     }
 
-    
+
 }

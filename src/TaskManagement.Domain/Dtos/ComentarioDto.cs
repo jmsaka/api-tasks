@@ -1,6 +1,6 @@
 ﻿namespace TaskManagement.Domain.Dtos;
 
-public class ComentarioDto 
+public class ComentarioDto
 {
     public Guid Id { get; set; }
     public string? Comentario { get; set; }

@@ -1,13 +1,13 @@
 ﻿namespace TaskManagement.Test.Projetos;
 
-public class UpsertProjetoHandlerTests
+public class UpsertProjetoCommandHandlerTests
 {
     private readonly Mock<IRepository<ProjetoEntity>> _projetoRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<IHistoricoAtualizacaoService> _historicoServiceMock;
     private readonly UpsertProjetoCommandHandler _handler;
 
-    public UpsertProjetoHandlerTests()
+    public UpsertProjetoCommandHandlerTests()
     {
         _projetoRepositoryMock = new Mock<IRepository<ProjetoEntity>>();
         _mapperMock = new Mock<IMapper>();
@@ -22,7 +22,7 @@ public class UpsertProjetoHandlerTests
         var projetoId = Guid.NewGuid();
         var command = new UpsertProjetoCommand
         {
-            Id = Guid.Empty, 
+            Id = Guid.Empty,
             Nome = "Novo Projeto",
             Descricao = "Descrição do novo projeto"
         };
