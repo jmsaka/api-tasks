@@ -1,1 +1,10 @@
 ﻿global using Moq;
+global using MediatR;
+global using TaskManagement.Application.Commands.Tarefas;
+global using TaskManagement.Domain.Entities;
+global using TaskManagement.Domain.Enums;
+global using TaskManagement.Domain.Interfaces;
+global using System.Linq.Expressions;
+global using TaskManagement.Application.Commands.Projetos;
+global using AutoMapper;
+global using TaskManagement.Application.Commands.Projetos;

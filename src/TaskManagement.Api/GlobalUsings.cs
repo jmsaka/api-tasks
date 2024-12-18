@@ -21,3 +21,4 @@ global using TaskManagement.Application.Commands.Comentarios;
 global using TaskManagement.Application.Queries.Comentarios;
 global using Microsoft.AspNetCore.Authorization;
 global using TaskManagement.Application.Queries.Relatorios;
+global using TaskManagement.Application.Queries.HistoricoAtualizacoes;

@@ -1,15 +1,10 @@
 ﻿namespace TaskManagement.Infrastructure.Services;
 
-public class HistoricoAtualizacaoService : IHistoricoAtualizacaoService
+public class HistoricoAtualizacaoService(IRepository<HistoricoAtualizacaoEntity> historicoRepository,
+                                         IServiceProvider serviceProvider) : IHistoricoAtualizacaoService
 {
-    private readonly IRepository<HistoricoAtualizacaoEntity> _historicoRepository;
-    private readonly IServiceProvider _serviceProvider;
-
-    public HistoricoAtualizacaoService(IRepository<HistoricoAtualizacaoEntity> historicoRepository, IServiceProvider serviceProvider)
-    {
-        _historicoRepository = historicoRepository;
-        _serviceProvider = serviceProvider;
-    }
+    private readonly IRepository<HistoricoAtualizacaoEntity> _historicoRepository = historicoRepository;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     public async Task<bool> RegistrarHistoricoAsync<T>(
         T entidade,
