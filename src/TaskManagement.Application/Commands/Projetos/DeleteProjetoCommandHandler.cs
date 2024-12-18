@@ -1,8 +1,10 @@
 ﻿namespace TaskManagement.Application.Commands.Projetos;
 
-public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository) : IRequestHandler<DeleteProjetoCommand, BaseResponse<ProjetoDto>>
+public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository,
+                                         IHistoricoAtualizacaoService service) : IRequestHandler<DeleteProjetoCommand, BaseResponse<ProjetoDto>>
 {
     private readonly IRepository<ProjetoEntity> _repository = repository;
+    private readonly IHistoricoAtualizacaoService _service = service;
 
     private async Task<string> DeleteAsync(DeleteProjetoCommand request, CancellationToken cancellationToken)
     {
@@ -17,6 +19,13 @@ public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository) 
                 hasErrors = "Projeto não encontrado.";
                 return hasErrors;
             }
+
+            await _service.RegistrarHistoricoAsync(
+                projeto,
+                projeto.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Delete),
+                cancellationToken);
 
             var projetos = await _repository.GetObjectsWithAnotherAsync(request.Id, cancellationToken);
 

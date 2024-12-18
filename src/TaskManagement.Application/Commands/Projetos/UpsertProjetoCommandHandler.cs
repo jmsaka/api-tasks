@@ -1,13 +1,24 @@
 ﻿namespace TaskManagement.Application.Commands.Projetos;
 
-public class UpsertProjetoCommandHandler(IRepository<ProjetoEntity> repository, IMapper mapper) : IRequestHandler<UpsertProjetoCommand, BaseResponse<Guid>>
+public class UpsertProjetoCommandHandler(IRepository<ProjetoEntity> repository,
+                                         IHistoricoAtualizacaoService service,
+                                         IMapper mapper) : IRequestHandler<UpsertProjetoCommand, BaseResponse<Guid>>
 {
     private readonly IRepository<ProjetoEntity> _repository = repository;
     private readonly IMapper _mapper = mapper;
+    private readonly IHistoricoAtualizacaoService _service = service;
 
     private async Task<BaseResponse<Guid>> Insert(ProjetoEntity projeto, CancellationToken cancellationToken)
     {
         projeto.DataCriacao = DateTime.UtcNow;
+
+        await _service.RegistrarHistoricoAsync(
+                projeto,
+                projeto.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Create),
+                cancellationToken);
+
         await _repository.AddAsync(projeto, cancellationToken);
         return new BaseResponse<Guid>(projeto.Id, true);
     }
@@ -20,6 +31,13 @@ public class UpsertProjetoCommandHandler(IRepository<ProjetoEntity> repository, 
         {
             return new BaseResponse<Guid>(Guid.Empty, false, $"Projeto {projeto.Id} não encontrada.");
         }
+
+        await _service.RegistrarHistoricoAsync(
+                projeto,
+                projeto.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Update),
+                cancellationToken);
 
         await _repository.UpdateAsync(projeto, cancellationToken);
         return new BaseResponse<Guid>(projeto.Id);

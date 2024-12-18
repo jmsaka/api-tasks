@@ -7,3 +7,8 @@ global using TaskManagement.Infrastructure.Data;
 global using TaskManagement.CrossCutting.Helpers;
 global using TaskManagement.Domain.Enums;
 global using TaskManagement.Domain.Dtos;
+global using AutoMapper;
+global using TaskManagement.Domain.Contracts;
+global using CommonServiceLocator;
+global using System.Text.Json;
+global using Microsoft.Extensions.DependencyInjection;

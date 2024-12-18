@@ -1,8 +1,10 @@
 ﻿namespace TaskManagement.Application.Commands.Tarefas;
 
-public class DeleteTarefaCommandHandler(IRepository<TarefaEntity> repository) : IRequestHandler<DeleteTarefaCommand, BaseResponse<TarefaDto>>
+public class DeleteTarefaCommandHandler(IRepository<TarefaEntity> repository,
+                                        IHistoricoAtualizacaoService service) : IRequestHandler<DeleteTarefaCommand, BaseResponse<TarefaDto>>
 {
     private readonly IRepository<TarefaEntity> _repository = repository;
+    private readonly IHistoricoAtualizacaoService _service = service;
 
     private async Task<string> DeleteAsync(DeleteTarefaCommand request, CancellationToken cancellationToken)
     {
@@ -17,6 +19,13 @@ public class DeleteTarefaCommandHandler(IRepository<TarefaEntity> repository) : 
                 hasErrors = "Tarefa não encontrado.";
                 return hasErrors;
             }
+
+            await _service.RegistrarHistoricoAsync(
+                tarefa,
+                tarefa.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Delete),
+                cancellationToken);
 
             var tarefas = await _repository.GetObjectsWithAnotherAsync(request.Id, cancellationToken);
 

@@ -2,14 +2,23 @@
 
 public class UpsertTarefaCommandHandler(
     IRepository<TarefaEntity> repository,
-    IMapper mapper) : IRequestHandler<UpsertTarefaCommand, BaseResponse<Guid>>
+    IMapper mapper,
+    IHistoricoAtualizacaoService service) : IRequestHandler<UpsertTarefaCommand, BaseResponse<Guid>>
 {
     private readonly IRepository<TarefaEntity> _repository = repository;
     private readonly IMapper _mapper = mapper;
+    private readonly IHistoricoAtualizacaoService _service = service;
     private readonly int _maxResults = 20;
 
     private async Task<BaseResponse<Guid>> Insert(TarefaEntity tarefa, CancellationToken cancellationToken)
     {
+        await _service.RegistrarHistoricoAsync(
+            tarefa,
+            tarefa.Id,
+            "ADM",
+            EnumHelper.GetEnumDescription(OperacaoCrud.Create),
+            cancellationToken);
+
         await _repository.AddAsync(tarefa, cancellationToken);
         return new BaseResponse<Guid>(tarefa.Id, true);
     }
@@ -22,6 +31,13 @@ public class UpsertTarefaCommandHandler(
         {
             return new BaseResponse<Guid>(Guid.Empty, false, $"Tarefa {tarefa.Id} não encontrada.");
         }
+
+        await _service.RegistrarHistoricoAsync(
+            tarefa, 
+            tarefa.Id, 
+            "ADM", 
+            EnumHelper.GetEnumDescription(OperacaoCrud.Update), 
+            cancellationToken);
 
         if (existingTarefa.Prioridade != tarefa.Prioridade)
         {

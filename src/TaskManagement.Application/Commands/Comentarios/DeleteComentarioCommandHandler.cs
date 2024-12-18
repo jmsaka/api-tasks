@@ -1,8 +1,10 @@
 ﻿namespace TaskManagement.Application.Commands.Comentarios;
 
-public class DeleteComentarioCommandHandler(IRepository<ComentarioEntity> repository) : IRequestHandler<DeleteComentarioCommand, BaseResponse<ComentarioDto>>
+public class DeleteComentarioCommandHandler(IRepository<ComentarioEntity> repository,
+                                            IHistoricoAtualizacaoService service) : IRequestHandler<DeleteComentarioCommand, BaseResponse<ComentarioDto>>
 {
     private readonly IRepository<ComentarioEntity> _repository = repository;
+    private readonly IHistoricoAtualizacaoService _service = service;
 
     private async Task<string> DeleteAsync(DeleteComentarioCommand request, CancellationToken cancellationToken)
     {
@@ -17,6 +19,13 @@ public class DeleteComentarioCommandHandler(IRepository<ComentarioEntity> reposi
                 hasErrors = "Comentario não encontrado.";
                 return hasErrors;
             }
+
+            await _service.RegistrarHistoricoAsync(
+                comentario,
+                comentario.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Delete),
+                cancellationToken);
 
             var Tarefas = await _repository.GetComentariosPorTarefasAsync(request.Id, cancellationToken);
 

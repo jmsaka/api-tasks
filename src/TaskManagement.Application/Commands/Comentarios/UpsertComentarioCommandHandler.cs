@@ -2,13 +2,22 @@
 
 public class UpsertComentarioCommandHandler(
     IRepository<ComentarioEntity> repository,
-    IMapper mapper) : IRequestHandler<UpsertComentarioCommand, BaseResponse<Guid>>
+    IMapper mapper,
+    IHistoricoAtualizacaoService service) : IRequestHandler<UpsertComentarioCommand, BaseResponse<Guid>>
 {
     private readonly IRepository<ComentarioEntity> _repository = repository;
     private readonly IMapper _mapper = mapper;
+    private readonly IHistoricoAtualizacaoService _service = service;
 
     private async Task<BaseResponse<Guid>> Insert(ComentarioEntity comentario, CancellationToken cancellationToken)
     {
+        await _service.RegistrarHistoricoAsync(
+                comentario,
+                comentario.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Create),
+                cancellationToken);
+
         await _repository.AddAsync(comentario, cancellationToken);
         return new BaseResponse<Guid>(comentario.Id, true);
     }
@@ -21,6 +30,13 @@ public class UpsertComentarioCommandHandler(
         {
             return new BaseResponse<Guid>(Guid.Empty, false, $"Comentário {comentario.Id} não encontrado.");
         }
+
+        await _service.RegistrarHistoricoAsync(
+                comentario,
+                comentario.Id,
+                "ADM",
+                EnumHelper.GetEnumDescription(OperacaoCrud.Update),
+                cancellationToken);
 
         await _repository.UpdateAsync(comentario, cancellationToken);
         return new BaseResponse<Guid>(comentario.Id);

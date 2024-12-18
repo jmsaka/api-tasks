@@ -5,6 +5,7 @@ public class TaskDbContext : DbContext
     public required DbSet<ProjetoEntity> Projetos { get; set; }
     public required DbSet<TarefaEntity> Tarefas { get; set; }
     public required DbSet<ComentarioEntity> Comentarios { get; set; }
+    public required DbSet<HistoricoAtualizacaoEntity> Historicos { get; set; }
 
     public TaskDbContext(DbContextOptions<TaskDbContext> options) : base(options)
     {
@@ -19,56 +20,83 @@ public class TaskDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ProjetoEntity>()
-            .HasKey(p => p.Id);
+        modelBuilder.Entity<ProjetoEntity>(entity =>
+        {
+            entity.HasKey(p => p.Id);
 
-        modelBuilder.Entity<TarefaEntity>()
-            .HasKey(t => t.Id);
+            entity.HasMany(p => p.Tarefas)
+                .WithOne(t => t.Projeto)
+                .HasForeignKey(t => t.ProjetoId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-        modelBuilder.Entity<ComentarioEntity>()
-            .HasKey(c => c.Id);
+        modelBuilder.Entity<TarefaEntity>(entity =>
+        {
+            entity.HasKey(t => t.Id);
 
-        modelBuilder.Entity<ProjetoEntity>()
-            .HasMany(p => p.Tarefas)
-            .WithOne(t => t.Projeto)
-            .HasForeignKey(t => t.ProjetoId)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(t => t.Comentarios)
+                .WithOne(c => c.Tarefa)
+                .HasForeignKey(c => c.TarefaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<TarefaEntity>()
-            .HasMany(t => t.Comentarios)
-            .WithOne(c => c.Tarefa)
-            .HasForeignKey(c => c.TarefaId)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(t => t.Status)
+                .HasConversion(
+                    v => EnumHelper.GetEnumDescription(v),
+                    v => EnumHelper.GetEnumFromDescription<StatusTarefa>(v)
+                )
+                .HasMaxLength(20)
+                .IsRequired();
 
+            entity.Property(t => t.Prioridade)
+                .HasConversion(
+                    v => EnumHelper.GetEnumDescription(v),
+                    v => EnumHelper.GetEnumFromDescription<PrioridadeTarefa>(v)
+                )
+                .HasMaxLength(20)
+                .IsRequired();
 
-        modelBuilder.Entity<TarefaEntity>()
-            .Property(t => t.Status)
-            .HasConversion(
-                v => EnumHelper.GetEnumDescription(v),
-                v => EnumHelper.GetEnumFromDescription<StatusTarefa>(v)
-            )
-            .HasMaxLength(20)
-            .IsRequired();
+            entity.Property(t => t.Titulo)
+                .IsRequired()
+                .HasMaxLength(100);
 
-        modelBuilder.Entity<TarefaEntity>()
-            .Property(t => t.Prioridade)
-            .HasConversion(
-                v => EnumHelper.GetEnumDescription(v),
-                v => EnumHelper.GetEnumFromDescription<PrioridadeTarefa>(v)
-            )
-            .HasMaxLength(20)
-            .IsRequired();
+            entity.Property(t => t.Descricao)
+                .IsRequired()
+                .HasMaxLength(500);
 
-        modelBuilder.Entity<TarefaEntity>()
-            .Property(t => t.Titulo).IsRequired().HasMaxLength(100);
+            entity.Property(t => t.DataVencimento)
+                .IsRequired();
+        });
 
-        modelBuilder.Entity<TarefaEntity>()
-            .Property(t => t.Descricao).IsRequired().HasMaxLength(500);
+        modelBuilder.Entity<ComentarioEntity>(entity =>
+        {
+            entity.HasKey(c => c.Id);
 
-        modelBuilder.Entity<TarefaEntity>()
-            .Property(t => t.DataVencimento).IsRequired();
+            entity.Property(c => c.Comentario)
+                .HasMaxLength(10000);
+        });
 
-        modelBuilder.Entity<ComentarioEntity>()
-            .Property(c => c.Comentario).HasMaxLength(10000);
+        modelBuilder.Entity<HistoricoAtualizacaoEntity>(entity =>
+        {
+            entity.HasKey(h => h.Id);
+
+            entity.Property(h => h.Entidade)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(h => h.ValorAntigo)
+                .IsRequired()
+                .HasMaxLength(4000);
+
+            entity.Property(h => h.ValorNovo)
+                .IsRequired()
+                .HasMaxLength(4000);
+
+            entity.Property(h => h.DataAlteracao)
+                .IsRequired();
+
+            entity.Property(h => h.UsuarioResponsavel)
+                .IsRequired()
+                .HasMaxLength(100);
+        });
     }
 }
