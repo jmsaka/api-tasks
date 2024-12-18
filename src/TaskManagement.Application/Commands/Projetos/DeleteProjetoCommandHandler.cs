@@ -1,9 +1,11 @@
 ﻿namespace TaskManagement.Application.Commands.Projetos;
 
 public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository,
+                                         IRepository<TarefaEntity> tarefaRepository,
                                          IHistoricoAtualizacaoService service) : IRequestHandler<DeleteProjetoCommand, BaseResponse<ProjetoDto>>
 {
     private readonly IRepository<ProjetoEntity> _repository = repository;
+    private readonly IRepository<TarefaEntity> _tarefaRepository = tarefaRepository;
     private readonly IHistoricoAtualizacaoService _service = service;
 
     private async Task<string> DeleteAsync(DeleteProjetoCommand request, CancellationToken cancellationToken)
@@ -20,6 +22,17 @@ public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository,
                 return hasErrors;
             }
 
+            // Verificar se o projeto tem tarefas pendentes
+            var tarefasPendentes = await _tarefaRepository.GetSpecificAsync(
+                t => t.ProjetoId == request.Id && t.Status == StatusTarefa.Pendente,
+                cancellationToken);
+
+            if (tarefasPendentes.Any())
+            {
+                hasErrors = "Não é possível deletar o Projeto. Existem tarefas pendentes associadas.";
+                return hasErrors;
+            }
+
             await _service.RegistrarHistoricoAsync(
                 projeto,
                 projeto.Id,
@@ -27,14 +40,7 @@ public class DeleteProjetoCommandHandler(IRepository<ProjetoEntity> repository,
                 EnumHelper.GetEnumDescription(OperacaoCrud.Delete),
                 cancellationToken);
 
-            var projetos = await _repository.GetObjectsWithAnotherAsync(request.Id, cancellationToken);
-
-            if (projetos != null && projetos.Any())
-            {
-                hasErrors = "Não é possível deletar o Projeto. Existem relacionamentos associados.";
-                return hasErrors;
-            }
-
+            // Remover o projeto, pois não há tarefas pendentes
             var isDeleted = await _repository.DeleteAsync(request.Id, cancellationToken);
 
             if (!isDeleted)

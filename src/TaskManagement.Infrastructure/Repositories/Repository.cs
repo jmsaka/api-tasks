@@ -148,7 +148,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         bool result = false;
-        var entity = await GetByIdAsync(id, cancellationToken);
+        var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
         if (entity != null)
         {
             _dbSet.Remove(entity);
