@@ -18,3 +18,4 @@
 /tests/TaskManagement.Test/bin/Debug/net8.0
 /src/TaskManagement.CrossCutting/obj
 /src/TaskManagement.CrossCutting/bin/Debug/net8.0
+/src/TaskManagement.Api/src/obj/TaskManagement.Infrastructure.EntityFrameworkCore.targets

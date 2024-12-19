@@ -7,14 +7,14 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar todos os arquivos do projeto, incluindo o TaskManagement.Api.csproj e outros projetos dependentes
+# Copiar os arquivos de projeto
 COPY src/TaskManagement.Api/TaskManagement.Api.csproj src/TaskManagement.Api/
 COPY src/TaskManagement.Application/TaskManagement.Application.csproj src/TaskManagement.Application/
 COPY src/TaskManagement.Domain/TaskManagement.Domain.csproj src/TaskManagement.Domain/
 COPY src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj src/TaskManagement.Infrastructure/
 COPY src/TaskManagement.CrossCutting/TaskManagement.CrossCutting.csproj src/TaskManagement.CrossCutting/
 
-# Restaurar as dependências
+# Restaurar dependências
 RUN dotnet restore "src/TaskManagement.Api/TaskManagement.Api.csproj"
 
 # Copiar o restante do código-fonte para o container
@@ -31,7 +31,9 @@ RUN dotnet publish "TaskManagement.Api.csproj" -c Release -o /app/publish
 # Usar a imagem base para a execução
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish . 
+COPY --from=publish /app/publish .
+
+# Definir o comando de entrada para a aplicação
 ENTRYPOINT ["dotnet", "TaskManagement.Api.dll"]
 # Adicionar comando para aplicar migrações durante a inicialização
 CMD ["sh", "-c", "dotnet ef database update && dotnet TaskManagement.Api.dll"]

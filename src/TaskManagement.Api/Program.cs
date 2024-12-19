@@ -18,6 +18,7 @@ public static class Program
                 sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()
             );
             options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
         });
 
         // Add services to the container.
@@ -32,6 +33,11 @@ public static class Program
                 options.Listen(IPAddress.Any, 51000);
             });
         }
+
+        //builder.WebHost.ConfigureKestrel(options =>
+        //{
+        //    options.Listen(IPAddress.Any, 51000);
+        //});
 
         var app = builder.Build();
 
@@ -58,8 +64,9 @@ public static class Program
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<TaskDbContext>();
 
-                if (!dbContext.Database.CanConnect())
+                if (dbContext.Database.CanConnect())
                 {
+                    Console.WriteLine("Conectado");
                     dbContext.Database.Migrate();
                 }
             }
@@ -71,6 +78,4 @@ public static class Program
 
         app.Run();
     }
-
-
 }
