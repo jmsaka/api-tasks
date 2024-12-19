@@ -1,0 +1,558 @@
+{
+	"info": {
+		"_postman_id": "21b84b40-cf7b-4b7f-84f5-ab7f30b934cb",
+		"name": "TaskManagement.Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5179238"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "Projeto",
+					"item": [
+						{
+							"name": "POST-PATCH",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"descricao\": \"Projeto API\",\n  \"nome\": \"Projeto API do Saka\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto?id=2224904d-2962-4392-ad6d-33b532db81f3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2224904d-2962-4392-ad6d-33b532db81f3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "05a96d3c-5f0f-41ed-916a-700be8134b851",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/Projeto/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Projeto",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"result\": {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"tarefas\": [\n      {\n        \"descricao\": \"<string>\",\n        \"prioridade\": \"<string>\",\n        \"status\": \"<string>\",\n        \"titulo\": \"<string>\",\n        \"id\": \"<uuid>\",\n        \"dataVencimento\": \"<dateTime>\"\n      },\n      {\n        \"descricao\": \"<string>\",\n        \"prioridade\": \"<string>\",\n        \"status\": \"<string>\",\n        \"titulo\": \"<string>\",\n        \"id\": \"<uuid>\",\n        \"dataVencimento\": \"<dateTime>\"\n      }\n    ],\n    \"dataCriacao\": \"<dateTime>\"\n  },\n  \"success\": \"<boolean>\",\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Tarefa",
+					"item": [
+						{
+							"name": "POST (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"descricao\": \"Analisar Doc Xpto\",\n  \"titulo\": \"Analisar Doc Xpto\",\n  \"projetoId\": \"762666f0-1af8-4548-c62e-08dd1fd6f59b\",\n  \"dataVencimento\": \"2024-12-24T02:12:30.1033333\",\n  \"status\": 1,\n  \"prioridade\": 2\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"3ca8c03b-bdb4-48d9-1c6b-08dd1fd75269\",\n  \"descricao\": \"Analisar Doc Xpto ABC\",\n  \"titulo\": \"Analisar Doc Xpto ABC\",\n  \"projetoId\": \"762666f0-1af8-4548-c62e-08dd1fd6f59b\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa?id=2224904d-2962-4392-ad6d-33b532db81f3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2224904d-2962-4392-ad6d-33b532db81f3",
+											"description": "Busca a lista de Tarefas por ID do Projeto"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6054e33b-8d9c-49e6-a023-d7f255bd364e",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comentario",
+					"item": [
+						{
+							"name": "POST (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"tarefaId\": \"e892ec57-e707-4dac-1c6a-08dd1fd75269\",\n  \"comentario\": \"Teste\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"tarefaId\": \"e892ec57-e707-4dac-1c6a-08dd1fd75269\",\n  \"comentario\": \"Teste 123\",\n  \"id\":\"319fd0e6-9475-4777-117d-08dd1fd87afd\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario?id=46010213-f50d-4fa0-bdbb-038829e0c690",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "46010213-f50d-4fa0-bdbb-038829e0c690",
+											"description": "Busca a lista de comentários por ID da Tarefa"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "319fd0e6-9475-4777-117d-08dd1fd87afd",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Relatorio",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/Relatorio/desempenho",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Relatorio",
+								"desempenho"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:51000"
+		}
+	]
+}

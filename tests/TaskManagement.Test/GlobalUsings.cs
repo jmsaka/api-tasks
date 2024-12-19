@@ -1,0 +1,10 @@
+﻿global using AutoMapper;
+global using Moq;
+global using System.Linq.Expressions;
+global using TaskManagement.Application.Commands.Comentarios;
+global using TaskManagement.Application.Commands.Projetos;
+global using TaskManagement.Application.Commands.Tarefas;
+global using TaskManagement.CrossCutting.Helpers;
+global using TaskManagement.Domain.Entities;
+global using TaskManagement.Domain.Enums;
+global using TaskManagement.Domain.Interfaces;

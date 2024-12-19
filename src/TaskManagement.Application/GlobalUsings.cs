@@ -1,0 +1,13 @@
+﻿global using AutoMapper;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using TaskManagement.Application.Commands.Comentarios;
+global using TaskManagement.Application.Commands.Projetos;
+global using TaskManagement.Application.Commands.Tarefas;
+global using TaskManagement.CrossCutting.Helpers;
+global using TaskManagement.Domain.Contracts;
+global using TaskManagement.Domain.Dtos;
+global using TaskManagement.Domain.Entities;
+global using TaskManagement.Domain.Enums;
+global using TaskManagement.Domain.Interfaces;

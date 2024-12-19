@@ -1,0 +1,11 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Linq.Expressions;
+global using System.Text.Json;
+global using TaskManagement.CrossCutting.Helpers;
+global using TaskManagement.Domain.Dtos;
+global using TaskManagement.Domain.Entities;
+global using TaskManagement.Domain.Enums;
+global using TaskManagement.Domain.Interfaces;
+global using TaskManagement.Infrastructure.Data;
