@@ -1,845 +1,558 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "TaskManagement.Api",
-    "version": "1.0"
-  },
-  "paths": {
-    "/api/Comentario": {
-      "post": {
-        "tags": [
-          "Comentario"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertComentarioCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertComentarioCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertComentarioCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Comentario"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ComentarioDtoICollectionBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ComentarioDtoICollectionBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ComentarioDtoICollectionBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Comentario/{id}": {
-      "delete": {
-        "tags": [
-          "Comentario"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ComentarioDtoBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ComentarioDtoBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ComentarioDtoBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/HistoricoAtualizacao": {
-      "get": {
-        "tags": [
-          "HistoricoAtualizacao"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HistoricoAtualizacaoDtoICollectionBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HistoricoAtualizacaoDtoICollectionBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HistoricoAtualizacaoDtoICollectionBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Projeto": {
-      "post": {
-        "tags": [
-          "Projeto"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertProjetoCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertProjetoCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertProjetoCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Projeto"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjetoDtoICollectionBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjetoDtoICollectionBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjetoDtoICollectionBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Projeto/{id}": {
-      "delete": {
-        "tags": [
-          "Projeto"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjetoDtoBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjetoDtoBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjetoDtoBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Relatorio/desempenho": {
-      "get": {
-        "tags": [
-          "Relatorio"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RelatorioDesempenhoDtoICollectionBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RelatorioDesempenhoDtoICollectionBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RelatorioDesempenhoDtoICollectionBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Tarefa": {
-      "post": {
-        "tags": [
-          "Tarefa"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertTarefaCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertTarefaCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertTarefaCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GuidBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Tarefa"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TarefaDtoICollectionBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TarefaDtoICollectionBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TarefaDtoICollectionBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Tarefa/{id}": {
-      "delete": {
-        "tags": [
-          "Tarefa"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/TarefaDtoBaseResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TarefaDtoBaseResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TarefaDtoBaseResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "ComentarioDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "comentario": {
-            "type": "string",
-            "nullable": true
-          },
-          "tarefaId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "dataCriacao": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ComentarioDtoBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ComentarioDto"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ComentarioDtoICollectionBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ComentarioDto"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GuidBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HistoricoAtualizacaoDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "entidade": {
-            "type": "string",
-            "nullable": true
-          },
-          "valorAntigo": {
-            "type": "string",
-            "nullable": true
-          },
-          "valorNovo": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataAlteracao": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "usuarioResponsavel": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HistoricoAtualizacaoDtoICollectionBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HistoricoAtualizacaoDto"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PrioridadeTarefa": {
-        "enum": [
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "ProjetoDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "nome": {
-            "type": "string",
-            "nullable": true
-          },
-          "descricao": {
-            "type": "string",
-            "nullable": true
-          },
-          "tarefas": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TarefaDto"
-            },
-            "nullable": true
-          },
-          "dataCriacao": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProjetoDtoBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ProjetoDto"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProjetoDtoICollectionBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjetoDto"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RelatorioDesempenhoDto": {
-        "type": "object",
-        "properties": {
-          "projetoId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "nomeProjeto": {
-            "type": "string",
-            "nullable": true
-          },
-          "tarefasConcluidas": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "mediaTarefasPorDia": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "RelatorioDesempenhoDtoICollectionBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RelatorioDesempenhoDto"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "StatusTarefa": {
-        "enum": [
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "TarefaDto": {
-        "required": [
-          "descricao",
-          "prioridade",
-          "status",
-          "titulo"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "titulo": {
-            "type": "string",
-            "nullable": true
-          },
-          "descricao": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataVencimento": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "prioridade": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TarefaDtoBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/TarefaDto"
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TarefaDtoICollectionBaseResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TarefaDto"
-            },
-            "nullable": true
-          },
-          "success": {
-            "type": "boolean"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpsertComentarioCommand": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "tarefaId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "comentario": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpsertProjetoCommand": {
-        "required": [
-          "descricao",
-          "nome"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "nome": {
-            "type": "string",
-            "nullable": true
-          },
-          "descricao": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpsertTarefaCommand": {
-        "required": [
-          "descricao",
-          "titulo"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "projetoId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "titulo": {
-            "type": "string",
-            "nullable": true
-          },
-          "descricao": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataVencimento": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "$ref": "#/components/schemas/StatusTarefa"
-          },
-          "prioridade": {
-            "$ref": "#/components/schemas/PrioridadeTarefa"
-          }
-        },
-        "additionalProperties": false
-      }
-    }
-  }
+	"info": {
+		"_postman_id": "21b84b40-cf7b-4b7f-84f5-ab7f30b934cb",
+		"name": "TaskManagement.Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5179238"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "Projeto",
+					"item": [
+						{
+							"name": "POST-PATCH",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"descricao\": \"Projeto API\",\n  \"nome\": \"Projeto API do Saka\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto?id=2224904d-2962-4392-ad6d-33b532db81f3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2224904d-2962-4392-ad6d-33b532db81f3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Projeto/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Projeto",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "05a96d3c-5f0f-41ed-916a-700be8134b851",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/Projeto/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Projeto",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"result\": {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"tarefas\": [\n      {\n        \"descricao\": \"<string>\",\n        \"prioridade\": \"<string>\",\n        \"status\": \"<string>\",\n        \"titulo\": \"<string>\",\n        \"id\": \"<uuid>\",\n        \"dataVencimento\": \"<dateTime>\"\n      },\n      {\n        \"descricao\": \"<string>\",\n        \"prioridade\": \"<string>\",\n        \"status\": \"<string>\",\n        \"titulo\": \"<string>\",\n        \"id\": \"<uuid>\",\n        \"dataVencimento\": \"<dateTime>\"\n      }\n    ],\n    \"dataCriacao\": \"<dateTime>\"\n  },\n  \"success\": \"<boolean>\",\n  \"message\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Tarefa",
+					"item": [
+						{
+							"name": "POST (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"descricao\": \"Analisar Doc Xpto\",\n  \"titulo\": \"Analisar Doc Xpto\",\n  \"projetoId\": \"762666f0-1af8-4548-c62e-08dd1fd6f59b\",\n  \"dataVencimento\": \"2024-12-24T02:12:30.1033333\",\n  \"status\": 1,\n  \"prioridade\": 2\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": \"3ca8c03b-bdb4-48d9-1c6b-08dd1fd75269\",\n  \"descricao\": \"Analisar Doc Xpto ABC\",\n  \"titulo\": \"Analisar Doc Xpto ABC\",\n  \"projetoId\": \"762666f0-1af8-4548-c62e-08dd1fd6f59b\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa?id=2224904d-2962-4392-ad6d-33b532db81f3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2224904d-2962-4392-ad6d-33b532db81f3",
+											"description": "Busca a lista de Tarefas por ID do Projeto"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Tarefa/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Tarefa",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6054e33b-8d9c-49e6-a023-d7f255bd364e",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comentario",
+					"item": [
+						{
+							"name": "POST (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"tarefaId\": \"e892ec57-e707-4dac-1c6a-08dd1fd75269\",\n  \"comentario\": \"Teste\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST (UPSERT)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"tarefaId\": \"e892ec57-e707-4dac-1c6a-08dd1fd75269\",\n  \"comentario\": \"Teste 123\",\n  \"id\":\"319fd0e6-9475-4777-117d-08dd1fd87afd\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ALL",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario?id=46010213-f50d-4fa0-bdbb-038829e0c690",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "46010213-f50d-4fa0-bdbb-038829e0c690",
+											"description": "Busca a lista de comentários por ID da Tarefa"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DEL ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/Comentario/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Comentario",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "319fd0e6-9475-4777-117d-08dd1fd87afd",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Relatorio",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/Relatorio/desempenho",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Relatorio",
+								"desempenho"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:51000"
+		}
+	]
 }

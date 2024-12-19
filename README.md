@@ -1,9 +1,3 @@
-
-
-
-
-docker-compose up --build
-
 # API Tasks
 
 ## Descrição
@@ -54,86 +48,168 @@ Sendo assim, a primeira vez pode demorar, as demais serão tranquilas após cria
 
 ### Utilizando Docker
 
-Na opção por Docker, será necessário rodar os seguinte comando a partir da pasta raiz do projeto Api:
-
+Na opção por Docker, será necessário rodar os seguinte comando a partir da pasta raiz do projeto:
 
 ```bash
 docker-compose up --build
-
-docker-compose down --rmi all
-
-docker-compose down --volumes
-
-docker run --network host -p 51000:51000 api-tasks-taskapi
-
 ```
 
-Ao final da execução, a API e o banco de dados SQL Server estará disponivel.
-
-```diff
-- Caso o Banco de dados ProductCatalogDb não tenha sido criado com a última instrução, será necessário criar manualmente antes do Migration
-```
-
-### Realizar Migration Inicial manualmente
-
-Na pasta "Products.Catalogs" execute a instrução:
+Após o término do processo de build, a aplicação pode ser rodada via script:
 
 ```bash
-dotnet ef migrations add InitialMigration --output-dir Migrations --project ./Products.Catalogs.Infrastructure.Repository/Products.Catalogs.Infrastructure.Repository.csproj --context ProductDbContext --startup-project ./Products.Catalogs.Api/Products.Catalogs.Api.csproj -v
+curl http://localhost:51000/api/projeto
 ```
+![Texto alternativo](assets/api-via-comando.png)
 
-Ao concluir, a mensagem `"Done. To undo this action, use 'ef migrations remove'"` será exibida.
-Em seguida, execute a instrução:
+Ou, você pode testar o método GET, direto do navegador:
 
-```bash
-dotnet ef database update --project ./Products.Catalogs.Infrastructure.Repository/Products.Catalogs.Infrastructure.Repository.csproj --context ProductDbContext
-```
-Ao concluir, a mensagem `"Done."` será exibida.
+![Texto alternativo](assets/api-via-navegador.png)
 
-### Carga de dados para testes
+### Banco de Dados
 
-Abra o SGBD de sua preferência e execute a instrução:
+Pensando em facilitar a avaliação, foi implementado na aplicação um método para forçar a migration na primeira execução. Dessa forma, o Analista não precisa de preocupar com o conjunto de tabelas iniciais.
+`"Contudo, entretanto, toda via"`, foi deixado na pasta **./scripts/sql** um script de seed para popular as tabelas.
 
 ```sql
-INSERT INTO Products (Id, Name, Description, Price, StockQuantity) VALUES
-('e7f5d5b7-cb8a-4b3b-8346-bd9f27a6f9bb', 'Laptop Gamer', 'Laptop com placa de vídeo dedicada e processador Intel i7', 4500.99, 25),
-('c8a4b6fa-1b62-4fdc-82ea-afa9b054c792', 'Smartphone Pro Max', 'Smartphone com tela OLED e câmera de 108MP', 2999.49, 50),
-('a2b33e9d-ecb1-4f9f-8a83-3f32bc7b67a7', 'Monitor UltraWide', 'Monitor de 34 polegadas UltraWide para produtividade', 1999.90, 15),
-('f9e3a291-d029-4184-9a87-2bba2f237b8a', 'Teclado Mecânico', 'Teclado mecânico RGB com switches Cherry MX', 499.99, 120),
-('b6d1a7d5-6f34-432e-8bfc-8e4f92068a21', 'Mouse Gamer', 'Mouse com sensor óptico de 16.000 DPI', 249.90, 80),
-('d04af3e8-3d14-4e56-9a58-6559d5fc7e6e', 'Fone de Ouvido Bluetooth', 'Fone de ouvido com cancelamento de ruído ativo', 799.99, 60),
-('fb3e762c-9173-4a94-bae2-bd8d65f04f59', 'SSD 1TB', 'SSD NVMe com velocidade de leitura de até 3500MB/s', 749.90, 100),
-('ac57e2c3-88c4-4b7b-900e-9fd94d8344a3', 'Smartwatch', 'Relógio inteligente com monitoramento de atividades físicas', 899.90, 40),
-('5c3a9e36-8d56-4c9e-8744-54ea7c9eae3a', 'Cadeira Gamer', 'Cadeira ergonômica com ajuste de altura e inclinação', 1299.99, 30),
-('84b9b8a0-b83e-4041-9d9e-4b7de5f98b7a', 'Headset Gamer', 'Headset com som surround 7.1 e microfone removível', 349.90, 45);
+-- Criando tabelas temporárias para armazenar os IDs dos Projetos e Tarefas
+DECLARE @Projetos TABLE (Id UNIQUEIDENTIFIER, Nome NVARCHAR(100));
+DECLARE @Tarefas TABLE (Id UNIQUEIDENTIFIER, ProjetoId UNIQUEIDENTIFIER, Titulo NVARCHAR(100));
+
+-- ==============================
+-- Inserção de Projetos
+-- ==============================
+INSERT INTO Projetos (Id, Nome, Descricao, DataCriacao)
+OUTPUT INSERTED.Id, INSERTED.Nome INTO @Projetos(Id, Nome)
+VALUES
+(NEWID(), 'Desenvolvimento de Sistema de Gestão', 'Projeto para desenvolver um sistema de gestão para a empresa de TI', GETUTCDATE()),
+(NEWID(), 'Implementação de API Restful', 'Projeto para criar e implementar uma API Restful utilizando .NET Core', GETUTCDATE()),
+(NEWID(), 'Automação de Testes de Software', 'Projeto de automação de testes para melhorar a cobertura de testes', GETUTCDATE()),
+(NEWID(), 'Desenvolvimento de Aplicativo Mobile', 'Projeto para desenvolver um aplicativo mobile para iOS e Android', GETUTCDATE()),
+(NEWID(), 'Integração de Sistemas ERP', 'Projeto para integrar diferentes módulos de um sistema ERP', GETUTCDATE());
+
+-- ==============================
+-- Inserção de Tarefas Dinâmicas
+-- ==============================
+DECLARE @ProjetoId UNIQUEIDENTIFIER;
+
+DECLARE ProjetoCursor CURSOR FOR
+SELECT Id FROM @Projetos;
+
+OPEN ProjetoCursor;
+FETCH NEXT FROM ProjetoCursor INTO @ProjetoId;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    INSERT INTO Tarefas (Id, Titulo, Descricao, DataVencimento, Status, Prioridade, ProjetoId)
+    OUTPUT INSERTED.Id, INSERTED.ProjetoId, INSERTED.Titulo INTO @Tarefas(Id, ProjetoId, Titulo)
+    VALUES
+    (NEWID(), 'Análise de Requisitos', 'Realizar levantamento de requisitos com o cliente', DATEADD(DAY, 7, GETUTCDATE()), 'Pendente', 'Alta', @ProjetoId),
+    (NEWID(), 'Desenvolvimento Backend', 'Desenvolver API para cadastro de usuários', DATEADD(DAY, 14, GETUTCDATE()), 'Pendente', 'Média', @ProjetoId),
+    (NEWID(), 'Testes de Unidade', 'Escrever testes unitários para a API', DATEADD(DAY, 10, GETUTCDATE()), 'Pendente', 'Média', @ProjetoId),
+    (NEWID(), 'Revisão de Código', 'Revisar o código desenvolvido para garantir qualidade', DATEADD(DAY, 5, GETUTCDATE()), 'Pendente', 'Alta', @ProjetoId),
+    (NEWID(), 'Desenvolvimento Frontend', 'Desenvolver a interface do usuário', DATEADD(DAY, 7, GETUTCDATE()), 'Pendente', 'Média', @ProjetoId);
+
+    FETCH NEXT FROM ProjetoCursor INTO @ProjetoId;
+END;
+
+CLOSE ProjetoCursor;
+DEALLOCATE ProjetoCursor;
+
+-- ==============================
+-- Inserção de Comentários Dinâmicos
+-- ==============================
+DECLARE @TarefaId UNIQUEIDENTIFIER;
+DECLARE @RandomComments TABLE (Comentario NVARCHAR(255));
+INSERT INTO @RandomComments VALUES
+('Ótimo progresso até agora!'),
+('Revisar a documentação antes de prosseguir.'),
+('Atenção aos prazos de entrega.'),
+('Discussão pendente com o cliente sobre este item.');
+
+DECLARE TarefaCursor CURSOR FOR
+SELECT Id FROM @Tarefas;
+
+OPEN TarefaCursor;
+FETCH NEXT FROM TarefaCursor INTO @TarefaId;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    DECLARE @CommentIndex INT = 1;
+
+    WHILE @CommentIndex <= 3 -- Gera de 1 a 3 comentários por tarefa
+    BEGIN
+        INSERT INTO Comentarios (Id, TarefaId, Comentario, DataCriacao)
+        SELECT NEWID(), @TarefaId, Comentario, GETUTCDATE()
+        FROM @RandomComments
+        WHERE Comentario = (SELECT TOP 1 Comentario FROM @RandomComments ORDER BY NEWID());
+
+        SET @CommentIndex = @CommentIndex + 1;
+    END;
+
+    FETCH NEXT FROM TarefaCursor INTO @TarefaId;
+END;
+
+CLOSE TarefaCursor;
+DEALLOCATE TarefaCursor;
+
+-- ==============================
+-- Resultado Final
+-- ==============================
+SELECT * FROM Projetos;
+SELECT * FROM Tarefas;
+SELECT * FROM Comentarios;
+
 ```
-## Preparação da API
 
-### Carregando a instância da API no Docker
+### POSTMAN
 
-Na pasta "Products.Catalogs" execute a instrução para gerar a imagem:
+Para quem gosta de usar POSTMAN, foi criado uma collection na pasta **./scripts/postman**. Ao importar a collection você terá toda a facilidade e praticidade para testar a API.
 
+## Refinamento - Perguntas ao PO
 
+**1. Relatórios e Análises**
+- O modelo atual de relatórios de desempenho está adequado ou precisamos de mais métricas e insights?
+- Deve ser possível exportar os relatórios de desempenho para formatos como Excel ou PDF?
+- Você gostaria de permitir que os usuários filtrassem ou personalizassem os relatórios, como por data ou tipo de tarefa?
 
+**2. Segurança e Autenticação**
+- A adição de autenticação e autorização (como login e gestão de usuários) é algo que você considera importante nesta nova versão?
+- Deve haver diferenciação de acessos (por exemplo, usuários com papéis de "gerente" com permissões especiais)?
 
-```bash
-docker build -t products-catalogs .
-```
+**3. API e Integrações**
+- Há planos para integrar a API com outros sistemas ou ferramentas (como Slack, Trello, Google Calendar)?
+- Deveríamos criar endpoints adicionais para a manipulação de tarefas e projetos, como filtros ou pesquisa avançada?
 
-Ao término da criação da imagem, execute a API utilizando a seguinte instrução:
+**4. Histórico e Comentários**
+- Deve ser possível pesquisar e filtrar o histórico de alterações para facilitar o acompanhamento das atualizações nas tarefas?
+- Há algum tipo de dados adicionais que você gostaria de armazenar no histórico de tarefas (como versões anteriores ou anexos)?
+- A funcionalidade de comentários nas tarefas é suficiente ou você gostaria de incluir recursos como anexos, reações ou menções a outros usuários?
 
-```bash
-docker run -d -p 51000:51000 --name products-catalogs-api products-catalogs 
-```
+**5. Manutenção e Suporte**
+- Como a manutenção do sistema deve ser feita em termos de atualizações de tarefas e projetos, dados e usuários?
+- Há planos para permitir que os usuários recuperem tarefas ou projetos excluídos acidentalmente?
+- Seria útil ter uma funcionalidade de backup e restauração para os dados?
 
-## Preparação da aplicação (Front)
-
-Na pasta "WebApplicationProducts" está a aplicação que conecta na API.
-```diff
-- A partir desse ponto interrompi as configurações do Docker. Ver notas em Considerações finais.
-```
+**6. Desafios ou Feedback dos Usuários**
+- Qual o feedback mais comum dos usuários sobre a versão atual?
+- Quais são as maiores dificuldades enfrentadas pelos usuários para gerenciar suas tarefas ou projetos?
+- Existem reclamações específicas sobre bugs ou falhas recorrentes na versão atual?
 
 ## Considerações Finais
 
-Como minha máquina é da empresa para qual prestava serviço, estou com algumas limitações de configurações por não ter acesso como administrador da máquina.
-Dessa forma, resolvi interromper aqui o README, mas, fico a disposição caso queiram tirar dúvidas a respeito do projeto.
+Gostei do tipo de desafio, pois, fez eu explorar áreas conhecidas expandido um pouco mais o conhecimento.
+Por padrão, sempre utilizo:
+- Pattern CQRS
+- AutoMapper
+- FluentValidation
+- NLog
+- Mediator
+- Entity Framework
+- SQL Server
+- Xunit
+- Postman
+- Swagger
+- IoC
+
+Pois, considero que projetos robustos em C# devam seguir por parte desse caminho, salvo as possíveis variações de banco de dados, serviços externos e demais considerações.
+Fico a disposição.
